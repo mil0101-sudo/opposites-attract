@@ -42,6 +42,7 @@ const questions = [
   ["I am confident making choices without asking other people.", "Independence"],
   ["I often rely on my friends when I am unsure what to do.", "Independence"],
   ["I would rather work alone than in a group.", "Independence"]
+
 ];
 
 
@@ -52,6 +53,8 @@ let person = 0;
 let question = 0;
 
 
+// START THE EXPERIMENT
+
 function startTest() {
 
   const nameA =
@@ -61,11 +64,18 @@ function startTest() {
     document.getElementById("nameB").value.trim();
 
   if (!nameA || !nameB) {
+
     alert("Please enter both names first!");
+
     return;
   }
 
   names = [nameA, nameB];
+
+  answers = [[], []];
+
+  person = 0;
+  question = 0;
 
   document
     .getElementById("startScreen")
@@ -75,14 +85,11 @@ function startTest() {
     .getElementById("quizScreen")
     .classList.remove("hidden");
 
-  person = 0;
-  question = 0;
-
-  answers = [[], []];
-
   showQuestion();
 }
 
+
+// SHOW CURRENT QUESTION
 
 function showQuestion() {
 
@@ -114,6 +121,9 @@ function showQuestion() {
     .textContent =
     current[0];
 
+
+  // Remove old answer selection
+
   document
     .querySelectorAll(".answers button")
     .forEach(button => {
@@ -122,6 +132,9 @@ function showQuestion() {
 
     });
 
+
+  // Disable Next until an answer is chosen
+
   const nextButton =
     document.getElementById("nextButton");
 
@@ -129,9 +142,14 @@ function showQuestion() {
 }
 
 
+// CHOOSE AN ANSWER
+
 function chooseAnswer(value, button) {
 
   answers[person][question] = value;
+
+
+  // Remove previous selection
 
   document
     .querySelectorAll(".answers button")
@@ -141,7 +159,13 @@ function chooseAnswer(value, button) {
 
     });
 
+
+  // Highlight selected answer
+
   button.classList.add("selected");
+
+
+  // Enable Next button
 
   document
     .getElementById("nextButton")
@@ -149,20 +173,32 @@ function chooseAnswer(value, button) {
 }
 
 
+// NEXT QUESTION
+
 function nextQuestion() {
 
   if (answers[person][question] === undefined) {
+
     return;
+
   }
+
 
   question++;
 
+
+  // Finished one person's questions
+
   if (question >= questions.length) {
+
+
+    // Friend 1 finished
 
     if (person === 0) {
 
       person = 1;
       question = 0;
+
 
       alert(
         "Friend 1 is finished!\n\n" +
@@ -171,21 +207,35 @@ function nextQuestion() {
         ". Don't peek at the previous answers 👀"
       );
 
+
       showQuestion();
 
-    } else {
+    }
+
+
+    // Friend 2 finished
+
+    else {
 
       calculateResult();
 
     }
 
-  } else {
+  }
+
+
+  // Continue normally
+
+  else {
 
     showQuestion();
 
   }
+
 }
 
+
+// CALCULATE RESULTS
 
 function calculateResult() {
 
@@ -194,6 +244,7 @@ function calculateResult() {
   const categoryScores = {};
   const categoryMaximums = {};
 
+
   questions.forEach((item, i) => {
 
     const category = item[1];
@@ -201,21 +252,35 @@ function calculateResult() {
     const answerA = answers[0][i];
     const answerB = answers[1][i];
 
+
     const difference =
       Math.abs(answerA - answerB);
+
+
+    /*
+      Same answer = 100%
+      1 point apart = 75%
+      2 points apart = 50%
+      3 points apart = 25%
+      Completely opposite = 0%
+    */
 
     const similarityPercentage =
       ((4 - difference) / 4) * 100;
 
+
     totalSimilarity +=
       similarityPercentage;
+
 
     if (!categoryScores[category]) {
 
       categoryScores[category] = 0;
+
       categoryMaximums[category] = 0;
 
     }
+
 
     categoryScores[category] +=
       similarityPercentage;
@@ -237,8 +302,11 @@ function calculateResult() {
     categoryScores,
     categoryMaximums
   );
+
 }
 
+
+// SHOW RESULTS
 
 function showResult(
   percentage,
@@ -254,10 +322,12 @@ function showResult(
     .getElementById("resultScreen")
     .classList.remove("hidden");
 
+
   document
     .getElementById("resultNames")
     .textContent =
     names[0] + " + " + names[1];
+
 
   document
     .getElementById("percentage")
@@ -273,22 +343,30 @@ function showResult(
     description =
       "You two are extremely similar! Your answers matched across most of the personality traits tested.";
 
-  } else if (percentage >= 70) {
+  }
+
+  else if (percentage >= 70) {
 
     description =
       "You have a lot in common, although there are still some differences between you.";
 
-  } else if (percentage >= 55) {
+  }
+
+  else if (percentage >= 55) {
 
     description =
       "You're a pretty balanced mix of similarities and differences.";
 
-  } else if (percentage >= 40) {
+  }
+
+  else if (percentage >= 40) {
 
     description =
       "You answered quite differently on a lot of questions. Your friendship definitely has some opposites energy.";
 
-  } else {
+  }
+
+  else {
 
     description =
       "Your answers were very different! According to this questionnaire, you two are bringing very different personalities to the friendship.";
@@ -301,6 +379,8 @@ function showResult(
     .textContent =
     description;
 
+
+  // CATEGORY RESULTS
 
   const results =
     document.getElementById("categoryResults");
@@ -321,6 +401,7 @@ function showResult(
 
       const box =
         document.createElement("div");
+
 
       box.className =
         "category-result";
@@ -343,8 +424,11 @@ function showResult(
 
 
   animatePercentage(percentage);
+
 }
 
+
+// ANIMATE THE FINAL PERCENTAGE
 
 function animatePercentage(finalNumber) {
 
@@ -373,5 +457,6 @@ function animatePercentage(finalNumber) {
         current + "%";
 
     }, 20);
+
 }
 ```
