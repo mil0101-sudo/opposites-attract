@@ -1,4 +1,3 @@
-```css
 * {
   box-sizing: border-box;
 }
@@ -28,6 +27,8 @@ body {
 .hidden {
   display: none;
 }
+
+/* START SCREEN */
 
 .science-icon {
   width: 60px;
@@ -90,6 +91,8 @@ h1 span {
   line-height: 1.5;
 }
 
+/* INPUTS */
+
 label {
   display: block;
   margin: 18px 0 7px;
@@ -111,6 +114,8 @@ input:focus {
   border-color: #6257e8;
   box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.1);
 }
+
+/* MAIN BUTTON */
 
 .main-button,
 .next-button {
@@ -138,22 +143,14 @@ input:focus {
   transform: scale(0.98);
 }
 
-.next-button {
-  margin-top: 18px;
-}
-
-.next-button:disabled {
-  background: #d8d8e5;
-  color: #9091a0;
-  cursor: not-allowed;
-}
-
 .tiny-note {
   text-align: center;
   color: #85899b;
   font-size: 12px;
   margin: 14px 0 0;
 }
+
+/* QUIZ */
 
 .top-row {
   display: flex;
@@ -192,7 +189,7 @@ input:focus {
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: .8px;
+  letter-spacing: 0.8px;
 }
 
 #questionText {
@@ -250,6 +247,8 @@ input:focus {
   font-weight: 600;
 }
 
+/* SELECTED ANSWER */
+
 .answers button.selected {
   background: #6257e8;
   border-color: #6257e8;
@@ -260,6 +259,22 @@ input:focus {
   background: rgba(255, 255, 255, 0.2);
   color: white;
 }
+
+/* NEXT BUTTON */
+
+.next-button {
+  margin-top: 18px;
+}
+
+.next-button:disabled {
+  background: #d8d8e5;
+  color: #9091a0;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* RESULTS */
 
 .result-intro {
   text-align: center;
@@ -308,6 +323,8 @@ h3 {
   margin-bottom: 13px;
 }
 
+/* CATEGORY RESULTS */
+
 .category-results {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -333,6 +350,8 @@ h3 {
   margin-top: 4px;
 }
 
+/* SCIENCE NOTE */
+
 .science-note {
   margin-top: 22px;
   padding: 16px;
@@ -346,6 +365,8 @@ h3 {
 .science-note p {
   margin-bottom: 0;
 }
+
+/* MOBILE */
 
 @media (max-width: 420px) {
 
@@ -369,5 +390,9 @@ h3 {
   .percentage {
     font-size: 65px;
   }
+
+  .category-results {
+    grid-template-columns: 1fr;
+  }
+
 }
-```
