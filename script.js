@@ -1,373 +1,377 @@
-```css
-* {
-  box-sizing: border-box;
-}
+```javascript
+const questions = [
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg, #eeeaff, #dfe8ff);
-  color: #20233a;
-}
+  // SOCIAL
+  ["I prefer having a few close friends rather than lots of friends.", "Social"],
+  ["I enjoy being the centre of attention.", "Social"],
+  ["I find it easy to start conversations with strangers.", "Social"],
+  ["I would rather spend a Friday night at home than go to a party.", "Social"],
+  ["I usually feel more energetic after spending time with other people.", "Social"],
 
-.app {
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 50px 18px 70px;
-}
+  // ORGANISATION
+  ["I usually plan things ahead of time.", "Organisation"],
+  ["I get stressed when things don't go according to plan.", "Organisation"],
+  ["I consider myself an organised person.", "Organisation"],
+  ["I prefer spontaneous plans over plans made far in advance.", "Organisation"],
+  ["I usually finish tasks before their deadline.", "Organisation"],
 
-.card {
-  background: rgba(255, 255, 255, 0.97);
-  border-radius: 28px;
-  padding: 34px 30px;
-  box-shadow: 0 20px 60px rgba(63, 57, 130, 0.18);
-}
+  // DECISION-MAKING
+  ["I make decisions based more on logic than emotion.", "Decision-making"],
+  ["I often change my mind after hearing someone else's opinion.", "Decision-making"],
+  ["I usually think about consequences before doing something.", "Decision-making"],
+  ["I would rather trust my instincts than overthink a decision.", "Decision-making"],
+  ["I find it easy to make decisions quickly.", "Decision-making"],
 
-.hidden {
-  display: none;
-}
+  // RISK-TAKING
+  ["I enjoy trying things that feel risky or unfamiliar.", "Risk-taking"],
+  ["I would try something new even if I might be bad at it.", "Risk-taking"],
+  ["I enjoy competing with other people.", "Risk-taking"],
+  ["I would choose an exciting option over a safe option.", "Risk-taking"],
+  ["I am usually willing to take a chance if the reward could be worth it.", "Risk-taking"],
 
-.science-icon {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #6257e8, #8278ff);
-  color: white;
-  font-size: 30px;
-  box-shadow: 0 8px 20px rgba(91, 91, 234, 0.25);
-}
+  // EMOTIONAL STYLE
+  ["I find it easy to express how I am feeling.", "Emotional style"],
+  ["I can usually tell when someone else is upset.", "Emotional style"],
+  ["I forgive people easily after an argument.", "Emotional style"],
+  ["It is difficult for me to hide when I am annoyed.", "Emotional style"],
+  ["I tend to think about my feelings before reacting to a situation.", "Emotional style"],
 
-.eyebrow {
-  margin: 0 0 10px;
-  color: #6257e8;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-}
+  // INDEPENDENCE
+  ["I am comfortable doing things by myself.", "Independence"],
+  ["I usually prefer solving problems on my own.", "Independence"],
+  ["I am confident making choices without asking other people.", "Independence"],
+  ["I often rely on my friends when I am unsure what to do.", "Independence"],
+  ["I would rather work alone than in a group.", "Independence"]
+];
 
-h1 {
-  margin: 0;
-  font-size: 40px;
-  line-height: 1.05;
-  letter-spacing: -1px;
-}
 
-h1 span {
-  color: #6257e8;
-}
+let names = ["", ""];
+let answers = [[], []];
 
-.intro {
-  color: #666b80;
-  font-size: 16px;
-  line-height: 1.55;
-  margin: 20px 0;
-}
+let person = 0;
+let question = 0;
 
-.experiment-box {
-  background: #f1efff;
-  border-left: 4px solid #6257e8;
-  padding: 17px;
-  border-radius: 14px;
-  margin: 24px 0;
-}
 
-.experiment-box strong {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: #6257e8;
-}
+function startTest() {
 
-.experiment-box p {
-  margin: 8px 0 0;
-  color: #5f6377;
-  font-size: 14px;
-  line-height: 1.5;
-}
+  const nameA =
+    document.getElementById("nameA").value.trim();
 
-label {
-  display: block;
-  margin: 18px 0 7px;
-  font-weight: 700;
-  font-size: 14px;
-}
+  const nameB =
+    document.getElementById("nameB").value.trim();
 
-input {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #dfe1ef;
-  border-radius: 13px;
-  font-size: 16px;
-  outline: none;
-  transition: 0.2s;
-}
-
-input:focus {
-  border-color: #6257e8;
-  box-shadow: 0 0 0 4px rgba(98, 87, 232, 0.1);
-}
-
-.main-button,
-.next-button {
-  width: 100%;
-  margin-top: 22px;
-  padding: 16px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #6257e8, #8278ff);
-  color: white;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.main-button:hover,
-.next-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(98, 87, 232, 0.25);
-}
-
-.main-button:active,
-.next-button:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.next-button {
-  margin-top: 18px;
-}
-
-.next-button:disabled {
-  background: #d8d8e5;
-  color: #9091a0;
-  cursor: not-allowed;
-}
-
-.tiny-note {
-  text-align: center;
-  color: #85899b;
-  font-size: 12px;
-  margin: 14px 0 0;
-}
-
-.top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #686d82;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-#personLabel {
-  color: #6257e8;
-}
-
-.progress {
-  height: 9px;
-  background: #e5e7f3;
-  border-radius: 20px;
-  overflow: hidden;
-  margin: 15px 0 30px;
-}
-
-#progressBar {
-  width: 5%;
-  height: 100%;
-  background: linear-gradient(90deg, #6257e8, #9188ff);
-  transition: width 0.25s ease;
-}
-
-.category-label {
-  display: inline-block;
-  background: #eeeeff;
-  color: #6257e8;
-  padding: 7px 11px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .8px;
-}
-
-#questionText {
-  font-size: 27px;
-  line-height: 1.3;
-  margin: 18px 0 12px;
-}
-
-.scale-title {
-  color: #777b8d;
-  font-size: 14px;
-  margin-bottom: 14px;
-}
-
-.answers {
-  display: grid;
-  gap: 10px;
-}
-
-.answers button {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  padding: 14px;
-  border: 2px solid #e4e5ef;
-  border-radius: 14px;
-  background: white;
-  color: #292c40;
-  text-align: left;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.answers button:hover {
-  border-color: #6257e8;
-  transform: translateX(2px);
-}
-
-.answers button strong {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border-radius: 10px;
-  background: #f0f0fa;
-  color: #6257e8;
-  font-size: 16px;
-}
-
-.answers button span {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.answers button.selected {
-  background: #6257e8;
-  border-color: #6257e8;
-  color: white;
-}
-
-.answers button.selected strong {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.result-intro {
-  text-align: center;
-  color: #777b8d;
-  margin-top: 25px;
-}
-
-#resultNames {
-  text-align: center;
-  font-size: 30px;
-}
-
-.percentage {
-  text-align: center;
-  color: #6257e8;
-  font-size: 78px;
-  font-weight: 900;
-  line-height: 1;
-  margin-top: 12px;
-}
-
-.similar-label {
-  text-align: center;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  margin-top: 7px;
-  color: #6257e8;
-}
-
-.result-description {
-  text-align: center;
-  color: #666b80;
-  line-height: 1.55;
-  margin: 18px auto;
-  max-width: 500px;
-}
-
-.divider {
-  height: 1px;
-  background: #e7e8f0;
-  margin: 26px 0;
-}
-
-h3 {
-  margin-bottom: 13px;
-}
-
-.category-results {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.category-result {
-  background: #f5f5fc;
-  padding: 14px;
-  border-radius: 13px;
-}
-
-.category-result-name {
-  color: #65697d;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.category-result-score {
-  color: #6257e8;
-  font-size: 25px;
-  font-weight: 900;
-  margin-top: 4px;
-}
-
-.science-note {
-  margin-top: 22px;
-  padding: 16px;
-  background: #fff8df;
-  border-radius: 14px;
-  color: #5f5840;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.science-note p {
-  margin-bottom: 0;
-}
-
-@media (max-width: 420px) {
-
-  .app {
-    padding: 20px 12px 40px;
+  if (!nameA || !nameB) {
+    alert("Please enter both names first!");
+    return;
   }
 
-  .card {
-    padding: 26px 20px;
-    border-radius: 23px;
+  names = [nameA, nameB];
+
+  document
+    .getElementById("startScreen")
+    .classList.add("hidden");
+
+  document
+    .getElementById("quizScreen")
+    .classList.remove("hidden");
+
+  person = 0;
+  question = 0;
+
+  answers = [[], []];
+
+  showQuestion();
+}
+
+
+function showQuestion() {
+
+  const current =
+    questions[question];
+
+  document
+    .getElementById("personLabel")
+    .textContent =
+    names[person] + "'s answers";
+
+  document
+    .getElementById("questionCount")
+    .textContent =
+    `${question + 1} / ${questions.length}`;
+
+  document
+    .getElementById("progressBar")
+    .style.width =
+    `${((question + 1) / questions.length) * 100}%`;
+
+  document
+    .getElementById("categoryLabel")
+    .textContent =
+    current[1];
+
+  document
+    .getElementById("questionText")
+    .textContent =
+    current[0];
+
+  document
+    .querySelectorAll(".answers button")
+    .forEach(button => {
+
+      button.classList.remove("selected");
+
+    });
+
+  const nextButton =
+    document.getElementById("nextButton");
+
+  nextButton.disabled = true;
+}
+
+
+function chooseAnswer(value, button) {
+
+  answers[person][question] = value;
+
+  document
+    .querySelectorAll(".answers button")
+    .forEach(btn => {
+
+      btn.classList.remove("selected");
+
+    });
+
+  button.classList.add("selected");
+
+  document
+    .getElementById("nextButton")
+    .disabled = false;
+}
+
+
+function nextQuestion() {
+
+  if (answers[person][question] === undefined) {
+    return;
   }
 
-  h1 {
-    font-size: 34px;
+  question++;
+
+  if (question >= questions.length) {
+
+    if (person === 0) {
+
+      person = 1;
+      question = 0;
+
+      alert(
+        "Friend 1 is finished!\n\n" +
+        "Pass the phone to " +
+        names[1] +
+        ". Don't peek at the previous answers 👀"
+      );
+
+      showQuestion();
+
+    } else {
+
+      calculateResult();
+
+    }
+
+  } else {
+
+    showQuestion();
+
+  }
+}
+
+
+function calculateResult() {
+
+  let totalSimilarity = 0;
+
+  const categoryScores = {};
+  const categoryMaximums = {};
+
+  questions.forEach((item, i) => {
+
+    const category = item[1];
+
+    const answerA = answers[0][i];
+    const answerB = answers[1][i];
+
+    const difference =
+      Math.abs(answerA - answerB);
+
+    const similarityPercentage =
+      ((4 - difference) / 4) * 100;
+
+    totalSimilarity +=
+      similarityPercentage;
+
+    if (!categoryScores[category]) {
+
+      categoryScores[category] = 0;
+      categoryMaximums[category] = 0;
+
+    }
+
+    categoryScores[category] +=
+      similarityPercentage;
+
+    categoryMaximums[category] += 100;
+
+  });
+
+
+  const percentage =
+    Math.round(
+      totalSimilarity /
+      questions.length
+    );
+
+
+  showResult(
+    percentage,
+    categoryScores,
+    categoryMaximums
+  );
+}
+
+
+function showResult(
+  percentage,
+  categoryScores,
+  categoryMaximums
+) {
+
+  document
+    .getElementById("quizScreen")
+    .classList.add("hidden");
+
+  document
+    .getElementById("resultScreen")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("resultNames")
+    .textContent =
+    names[0] + " + " + names[1];
+
+  document
+    .getElementById("percentage")
+    .textContent =
+    "0%";
+
+
+  let description;
+
+
+  if (percentage >= 85) {
+
+    description =
+      "You two are extremely similar! Your answers matched across most of the personality traits tested.";
+
+  } else if (percentage >= 70) {
+
+    description =
+      "You have a lot in common, although there are still some differences between you.";
+
+  } else if (percentage >= 55) {
+
+    description =
+      "You're a pretty balanced mix of similarities and differences.";
+
+  } else if (percentage >= 40) {
+
+    description =
+      "You answered quite differently on a lot of questions. Your friendship definitely has some opposites energy.";
+
+  } else {
+
+    description =
+      "Your answers were very different! According to this questionnaire, you two are bringing very different personalities to the friendship.";
+
   }
 
-  #questionText {
-    font-size: 23px;
-  }
 
-  .percentage {
-    font-size: 65px;
-  }
+  document
+    .getElementById("resultDescription")
+    .textContent =
+    description;
+
+
+  const results =
+    document.getElementById("categoryResults");
+
+  results.innerHTML = "";
+
+
+  Object.keys(categoryScores)
+    .forEach(category => {
+
+      const score =
+        Math.round(
+          categoryScores[category] /
+          categoryMaximums[category] *
+          100
+        );
+
+
+      const box =
+        document.createElement("div");
+
+      box.className =
+        "category-result";
+
+
+      box.innerHTML = `
+        <div class="category-result-name">
+          ${category}
+        </div>
+
+        <div class="category-result-score">
+          ${score}%
+        </div>
+      `;
+
+
+      results.appendChild(box);
+
+    });
+
+
+  animatePercentage(percentage);
+}
+
+
+function animatePercentage(finalNumber) {
+
+  const element =
+    document.getElementById("percentage");
+
+  let current = 0;
+
+
+  const interval =
+    setInterval(() => {
+
+      current += 2;
+
+
+      if (current >= finalNumber) {
+
+        current = finalNumber;
+
+        clearInterval(interval);
+
+      }
+
+
+      element.textContent =
+        current + "%";
+
+    }, 20);
 }
 ```
