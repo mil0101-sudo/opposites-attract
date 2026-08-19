@@ -12,7 +12,10 @@
 
   <title>Do Opposites Really Attract?</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
 </head>
 
@@ -86,6 +89,7 @@
 
 
       <button
+        type="button"
         class="main-button"
         onclick="startTest()"
       >
@@ -142,12 +146,11 @@
 
 
         <button
+          type="button"
           onclick="chooseAnswer(1, this)"
         >
 
-          <strong>
-            1
-          </strong>
+          <strong>1</strong>
 
           <span>
             Not me
@@ -157,12 +160,11 @@
 
 
         <button
+          type="button"
           onclick="chooseAnswer(2, this)"
         >
 
-          <strong>
-            2
-          </strong>
+          <strong>2</strong>
 
           <span>
             Mostly not me
@@ -172,12 +174,11 @@
 
 
         <button
+          type="button"
           onclick="chooseAnswer(3, this)"
         >
 
-          <strong>
-            3
-          </strong>
+          <strong>3</strong>
 
           <span>
             Sometimes
@@ -187,12 +188,11 @@
 
 
         <button
+          type="button"
           onclick="chooseAnswer(4, this)"
         >
 
-          <strong>
-            4
-          </strong>
+          <strong>4</strong>
 
           <span>
             Mostly me
@@ -202,12 +202,11 @@
 
 
         <button
+          type="button"
           onclick="chooseAnswer(5, this)"
         >
 
-          <strong>
-            5
-          </strong>
+          <strong>5</strong>
 
           <span>
             Definitely me
@@ -220,6 +219,7 @@
 
 
       <button
+        type="button"
         class="next-button"
         id="nextButton"
         onclick="nextQuestion()"
@@ -301,6 +301,7 @@
 
 
       <button
+        type="button"
         class="main-button"
         onclick="location.reload()"
       >
@@ -313,9 +314,13 @@
   </main>
 
 
-  <!-- CONNECT JAVASCRIPT -->
+  <!-- LOAD JAVASCRIPT AFTER THE HTML -->
 
-  <script src="script.js"></script>
+  <script
+    src="script.js"
+    defer
+  ></script>
+
 
 </body>
 
