@@ -1,4 +1,3 @@
-```javascript
 const questions = [
 
   // SOCIAL
@@ -53,7 +52,9 @@ let person = 0;
 let question = 0;
 
 
-// START THE EXPERIMENT
+// ================================
+// START TEST
+// ================================
 
 function startTest() {
 
@@ -63,12 +64,14 @@ function startTest() {
   const nameB =
     document.getElementById("nameB").value.trim();
 
+
   if (!nameA || !nameB) {
 
     alert("Please enter both names first!");
 
     return;
   }
+
 
   names = [nameA, nameB];
 
@@ -77,52 +80,60 @@ function startTest() {
   person = 0;
   question = 0;
 
+
   document
     .getElementById("startScreen")
     .classList.add("hidden");
+
 
   document
     .getElementById("quizScreen")
     .classList.remove("hidden");
 
+
   showQuestion();
 }
 
 
-// SHOW CURRENT QUESTION
+// ================================
+// SHOW QUESTION
+// ================================
 
 function showQuestion() {
 
   const current =
     questions[question];
 
+
   document
     .getElementById("personLabel")
     .textContent =
     names[person] + "'s answers";
+
 
   document
     .getElementById("questionCount")
     .textContent =
     `${question + 1} / ${questions.length}`;
 
+
   document
     .getElementById("progressBar")
     .style.width =
     `${((question + 1) / questions.length) * 100}%`;
+
 
   document
     .getElementById("categoryLabel")
     .textContent =
     current[1];
 
+
   document
     .getElementById("questionText")
     .textContent =
     current[0];
 
-
-  // Remove old answer selection
 
   document
     .querySelectorAll(".answers button")
@@ -133,23 +144,20 @@ function showQuestion() {
     });
 
 
-  // Disable Next until an answer is chosen
-
-  const nextButton =
-    document.getElementById("nextButton");
-
-  nextButton.disabled = true;
+  document
+    .getElementById("nextButton")
+    .disabled = true;
 }
 
 
-// CHOOSE AN ANSWER
+// ================================
+// CHOOSE ANSWER
+// ================================
 
 function chooseAnswer(value, button) {
 
   answers[person][question] = value;
 
-
-  // Remove previous selection
 
   document
     .querySelectorAll(".answers button")
@@ -160,12 +168,8 @@ function chooseAnswer(value, button) {
     });
 
 
-  // Highlight selected answer
-
   button.classList.add("selected");
 
-
-  // Enable Next button
 
   document
     .getElementById("nextButton")
@@ -173,11 +177,15 @@ function chooseAnswer(value, button) {
 }
 
 
+// ================================
 // NEXT QUESTION
+// ================================
 
 function nextQuestion() {
 
-  if (answers[person][question] === undefined) {
+  if (
+    answers[person][question] === undefined
+  ) {
 
     return;
 
@@ -187,16 +195,15 @@ function nextQuestion() {
   question++;
 
 
-  // Finished one person's questions
-
   if (question >= questions.length) {
 
 
-    // Friend 1 finished
+    // FRIEND 1 FINISHED
 
     if (person === 0) {
 
       person = 1;
+
       question = 0;
 
 
@@ -213,7 +220,7 @@ function nextQuestion() {
     }
 
 
-    // Friend 2 finished
+    // BOTH FRIENDS FINISHED
 
     else {
 
@@ -224,33 +231,39 @@ function nextQuestion() {
   }
 
 
-  // Continue normally
-
   else {
 
     showQuestion();
 
   }
-
 }
 
 
-// CALCULATE RESULTS
+// ================================
+// CALCULATE RESULT
+// ================================
 
 function calculateResult() {
 
   let totalSimilarity = 0;
 
+
   const categoryScores = {};
+
   const categoryMaximums = {};
 
 
   questions.forEach((item, i) => {
 
-    const category = item[1];
+    const category =
+      item[1];
 
-    const answerA = answers[0][i];
-    const answerB = answers[1][i];
+
+    const answerA =
+      answers[0][i];
+
+    const answerB =
+      answers[1][i];
 
 
     const difference =
@@ -258,15 +271,48 @@ function calculateResult() {
 
 
     /*
+      NEW SCORING SYSTEM
+
       Same answer = 100%
-      1 point apart = 75%
-      2 points apart = 50%
-      3 points apart = 25%
-      Completely opposite = 0%
+      1 point apart = 60%
+      2 points apart = 30%
+      3 points apart = 10%
+      4 points apart = 0%
     */
 
-    const similarityPercentage =
-      ((4 - difference) / 4) * 100;
+
+    let similarityPercentage;
+
+
+    if (difference === 0) {
+
+      similarityPercentage = 100;
+
+    }
+
+    else if (difference === 1) {
+
+      similarityPercentage = 60;
+
+    }
+
+    else if (difference === 2) {
+
+      similarityPercentage = 30;
+
+    }
+
+    else if (difference === 3) {
+
+      similarityPercentage = 10;
+
+    }
+
+    else {
+
+      similarityPercentage = 0;
+
+    }
 
 
     totalSimilarity +=
@@ -285,6 +331,7 @@ function calculateResult() {
     categoryScores[category] +=
       similarityPercentage;
 
+
     categoryMaximums[category] += 100;
 
   });
@@ -302,11 +349,12 @@ function calculateResult() {
     categoryScores,
     categoryMaximums
   );
-
 }
 
 
-// SHOW RESULTS
+// ================================
+// SHOW RESULT
+// ================================
 
 function showResult(
   percentage,
@@ -317,6 +365,7 @@ function showResult(
   document
     .getElementById("quizScreen")
     .classList.add("hidden");
+
 
   document
     .getElementById("resultScreen")
@@ -385,6 +434,7 @@ function showResult(
   const results =
     document.getElementById("categoryResults");
 
+
   results.innerHTML = "";
 
 
@@ -423,17 +473,281 @@ function showResult(
     });
 
 
+  // ADD VIEW ANSWERS BUTTON
+
+  addViewAnswersButton();
+
+
   animatePercentage(percentage);
+}
+
+
+// ================================
+// VIEW ANSWERS BUTTON
+// ================================
+
+function addViewAnswersButton() {
+
+  const resultScreen =
+    document.getElementById("resultScreen");
+
+
+  // Prevent duplicate buttons
+
+  const oldButton =
+    document.getElementById("viewAnswersButton");
+
+
+  if (oldButton) {
+
+    oldButton.remove();
+
+  }
+
+
+  const button =
+    document.createElement("button");
+
+
+  button.id =
+    "viewAnswersButton";
+
+
+  button.className =
+    "main-button";
+
+
+  button.textContent =
+    "View your answers ↓";
+
+
+  button.onclick =
+    showAnswers;
+
+
+  const scienceNote =
+    document.querySelector(".science-note");
+
+
+  resultScreen.insertBefore(
+    button,
+    scienceNote
+  );
 
 }
 
 
-// ANIMATE THE FINAL PERCENTAGE
+// ================================
+// SHOW ANSWERS
+// ================================
 
-function animatePercentage(finalNumber) {
+function showAnswers() {
+
+  const resultScreen =
+    document.getElementById("resultScreen");
+
+
+  let oldAnswers =
+    document.getElementById("answerReview");
+
+
+  // If already open, close it
+
+  if (oldAnswers) {
+
+    oldAnswers.remove();
+
+    document
+      .getElementById("viewAnswersButton")
+      .textContent =
+      "View your answers ↓";
+
+    return;
+
+  }
+
+
+  const review =
+    document.createElement("div");
+
+
+  review.id =
+    "answerReview";
+
+
+  review.className =
+    "answer-review";
+
+
+  const title =
+    document.createElement("h3");
+
+
+  title.textContent =
+    "Your answers";
+
+
+  review.appendChild(title);
+
+
+  let currentCategory =
+    "";
+
+
+  questions.forEach((item, i) => {
+
+    const questionText =
+      item[0];
+
+    const category =
+      item[1];
+
+
+    // Add category heading
+
+    if (category !== currentCategory) {
+
+      currentCategory =
+        category;
+
+
+      const categoryHeading =
+        document.createElement("div");
+
+
+      categoryHeading.className =
+        "answer-category";
+
+
+      categoryHeading.textContent =
+        category;
+
+
+      review.appendChild(
+        categoryHeading
+      );
+
+    }
+
+
+    const answerA =
+      answers[0][i];
+
+    const answerB =
+      answers[1][i];
+
+
+    const difference =
+      Math.abs(answerA - answerB);
+
+
+    let similarity;
+
+
+    if (difference === 0) {
+
+      similarity = 100;
+
+    }
+
+    else if (difference === 1) {
+
+      similarity = 60;
+
+    }
+
+    else if (difference === 2) {
+
+      similarity = 30;
+
+    }
+
+    else if (difference === 3) {
+
+      similarity = 10;
+
+    }
+
+    else {
+
+      similarity = 0;
+
+    }
+
+
+    const answerBox =
+      document.createElement("div");
+
+
+    answerBox.className =
+      "answer-review-box";
+
+
+    answerBox.innerHTML = `
+
+      <p class="review-question">
+        ${i + 1}. ${questionText}
+      </p>
+
+      <div class="review-answers">
+
+        <div>
+          <strong>${names[0]}</strong>
+          <span>${answerA}/5</span>
+        </div>
+
+        <div>
+          <strong>${names[1]}</strong>
+          <span>${answerB}/5</span>
+        </div>
+
+      </div>
+
+      <div class="review-similarity">
+        ${similarity}% similarity
+      </div>
+
+    `;
+
+
+    review.appendChild(
+      answerBox
+    );
+
+  });
+
+
+  const viewButton =
+    document.getElementById(
+      "viewAnswersButton"
+    );
+
+
+  resultScreen.insertBefore(
+    review,
+    viewButton.nextSibling
+  );
+
+
+  viewButton.textContent =
+    "Hide your answers ↑";
+
+}
+
+
+// ================================
+// ANIMATE PERCENTAGE
+// ================================
+
+function animatePercentage(
+  finalNumber
+) {
 
   const element =
-    document.getElementById("percentage");
+    document.getElementById(
+      "percentage"
+    );
+
 
   let current = 0;
 
@@ -446,9 +760,12 @@ function animatePercentage(finalNumber) {
 
       if (current >= finalNumber) {
 
-        current = finalNumber;
+        current =
+          finalNumber;
 
-        clearInterval(interval);
+        clearInterval(
+          interval
+        );
 
       }
 
@@ -456,7 +773,7 @@ function animatePercentage(finalNumber) {
       element.textContent =
         current + "%";
 
+
     }, 20);
 
 }
-```
