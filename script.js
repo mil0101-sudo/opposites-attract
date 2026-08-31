@@ -51,6 +51,8 @@ let answers = [[], []];
 let person = 0;
 let question = 0;
 
+let reviewQuestion = 0;
+
 
 // ================================
 // START TEST
@@ -197,13 +199,9 @@ function nextQuestion() {
 
   if (question >= questions.length) {
 
-
-    // FRIEND 1 FINISHED
-
     if (person === 0) {
 
       person = 1;
-
       question = 0;
 
 
@@ -219,9 +217,6 @@ function nextQuestion() {
 
     }
 
-
-    // BOTH FRIENDS FINISHED
-
     else {
 
       calculateResult();
@@ -229,7 +224,6 @@ function nextQuestion() {
     }
 
   }
-
 
   else {
 
@@ -247,72 +241,23 @@ function calculateResult() {
 
   let totalSimilarity = 0;
 
-
   const categoryScores = {};
-
   const categoryMaximums = {};
 
 
   questions.forEach((item, i) => {
 
-    const category =
-      item[1];
+    const category = item[1];
 
-
-    const answerA =
-      answers[0][i];
-
-    const answerB =
-      answers[1][i];
-
+    const answerA = answers[0][i];
+    const answerB = answers[1][i];
 
     const difference =
       Math.abs(answerA - answerB);
 
 
-    /*
-      NEW SCORING SYSTEM
-
-      Same answer = 100%
-      1 point apart = 60%
-      2 points apart = 30%
-      3 points apart = 10%
-      4 points apart = 0%
-    */
-
-
-    let similarityPercentage;
-
-
-    if (difference === 0) {
-
-      similarityPercentage = 100;
-
-    }
-
-    else if (difference === 1) {
-
-      similarityPercentage = 60;
-
-    }
-
-    else if (difference === 2) {
-
-      similarityPercentage = 30;
-
-    }
-
-    else if (difference === 3) {
-
-      similarityPercentage = 10;
-
-    }
-
-    else {
-
-      similarityPercentage = 0;
-
-    }
+    const similarityPercentage =
+      getSimilarity(difference);
 
 
     totalSimilarity +=
@@ -322,7 +267,6 @@ function calculateResult() {
     if (!categoryScores[category]) {
 
       categoryScores[category] = 0;
-
       categoryMaximums[category] = 0;
 
     }
@@ -330,7 +274,6 @@ function calculateResult() {
 
     categoryScores[category] +=
       similarityPercentage;
-
 
     categoryMaximums[category] += 100;
 
@@ -349,6 +292,32 @@ function calculateResult() {
     categoryScores,
     categoryMaximums
   );
+}
+
+
+// ================================
+// SIMILARITY SCORING
+// ================================
+
+function getSimilarity(difference) {
+
+  if (difference === 0) {
+    return 100;
+  }
+
+  if (difference === 1) {
+    return 60;
+  }
+
+  if (difference === 2) {
+    return 30;
+  }
+
+  if (difference === 3) {
+    return 10;
+  }
+
+  return 0;
 }
 
 
@@ -429,8 +398,6 @@ function showResult(
     description;
 
 
-  // CATEGORY RESULTS
-
   const results =
     document.getElementById("categoryResults");
 
@@ -473,17 +440,14 @@ function showResult(
     });
 
 
-  // ADD VIEW ANSWERS BUTTON
-
   addViewAnswersButton();
-
 
   animatePercentage(percentage);
 }
 
 
 // ================================
-// VIEW ANSWERS BUTTON
+// ADD VIEW ANSWERS BUTTON
 // ================================
 
 function addViewAnswersButton() {
@@ -492,16 +456,14 @@ function addViewAnswersButton() {
     document.getElementById("resultScreen");
 
 
-  // Prevent duplicate buttons
-
   const oldButton =
-    document.getElementById("viewAnswersButton");
+    document.getElementById(
+      "viewAnswersButton"
+    );
 
 
   if (oldButton) {
-
     oldButton.remove();
-
   }
 
 
@@ -522,7 +484,7 @@ function addViewAnswersButton() {
 
 
   button.onclick =
-    showAnswers;
+    openAnswerReview;
 
 
   const scienceNote =
@@ -533,37 +495,107 @@ function addViewAnswersButton() {
     button,
     scienceNote
   );
-
 }
 
 
 // ================================
-// SHOW ANSWERS
+// OPEN ANSWER REVIEW
 // ================================
 
-function showAnswers() {
+function openAnswerReview() {
 
   const resultScreen =
     document.getElementById("resultScreen");
 
 
-  let oldAnswers =
-    document.getElementById("answerReview");
+  resultScreen
+    .classList
+    .add("review-mode");
 
 
-  // If already open, close it
+  document
+    .querySelector(".result-intro")
+    .classList
+    .add("hidden");
 
-  if (oldAnswers) {
 
-    oldAnswers.remove();
+  document
+    .getElementById("resultNames")
+    .classList
+    .add("hidden");
 
-    document
-      .getElementById("viewAnswersButton")
-      .textContent =
-      "View your answers ↓";
 
-    return;
+  document
+    .getElementById("percentage")
+    .classList
+    .add("hidden");
 
+
+  document
+    .querySelector(".similar-label")
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById("resultDescription")
+    .classList
+    .add("hidden");
+
+
+  document
+    .querySelector(".divider")
+    .classList
+    .add("hidden");
+
+
+  document
+    .querySelector("h3")
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById("categoryResults")
+    .classList
+    .add("hidden");
+
+
+  document
+    .querySelector(".science-note")
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById("viewAnswersButton")
+    .classList
+    .add("hidden");
+
+
+  reviewQuestion = 0;
+
+
+  createReviewScreen();
+
+  showReviewQuestion();
+}
+
+
+// ================================
+// CREATE REVIEW SCREEN
+// ================================
+
+function createReviewScreen() {
+
+  const oldReview =
+    document.getElementById(
+      "reviewScreen"
+    );
+
+
+  if (oldReview) {
+    oldReview.remove();
   }
 
 
@@ -572,166 +604,408 @@ function showAnswers() {
 
 
   review.id =
-    "answerReview";
+    "reviewScreen";
 
 
-  review.className =
-    "answer-review";
+  review.innerHTML = `
+
+    <div class="review-top">
+
+      <button
+        type="button"
+        class="back-results"
+        onclick="closeAnswerReview()"
+      >
+        ← Back to results
+      </button>
+
+      <span id="reviewCount">
+        1 / 30
+      </span>
+
+    </div>
 
 
-  const title =
-    document.createElement("h3");
+    <div class="progress">
+
+      <div id="reviewProgressBar"></div>
+
+    </div>
 
 
-  title.textContent =
-    "Your answers";
+    <div
+      class="category-label"
+      id="reviewCategory"
+    ></div>
 
 
-  review.appendChild(title);
+    <h2 id="reviewQuestionText"></h2>
 
 
-  let currentCategory =
-    "";
+    <div class="review-person">
 
-
-  questions.forEach((item, i) => {
-
-    const questionText =
-      item[0];
-
-    const category =
-      item[1];
-
-
-    // Add category heading
-
-    if (category !== currentCategory) {
-
-      currentCategory =
-        category;
-
-
-      const categoryHeading =
-        document.createElement("div");
-
-
-      categoryHeading.className =
-        "answer-category";
-
-
-      categoryHeading.textContent =
-        category;
-
-
-      review.appendChild(
-        categoryHeading
-      );
-
-    }
-
-
-    const answerA =
-      answers[0][i];
-
-    const answerB =
-      answers[1][i];
-
-
-    const difference =
-      Math.abs(answerA - answerB);
-
-
-    let similarity;
-
-
-    if (difference === 0) {
-
-      similarity = 100;
-
-    }
-
-    else if (difference === 1) {
-
-      similarity = 60;
-
-    }
-
-    else if (difference === 2) {
-
-      similarity = 30;
-
-    }
-
-    else if (difference === 3) {
-
-      similarity = 10;
-
-    }
-
-    else {
-
-      similarity = 0;
-
-    }
-
-
-    const answerBox =
-      document.createElement("div");
-
-
-    answerBox.className =
-      "answer-review-box";
-
-
-    answerBox.innerHTML = `
-
-      <p class="review-question">
-        ${i + 1}. ${questionText}
+      <p class="review-person-name">
+        <span id="reviewNameA"></span>'s answer
       </p>
 
-      <div class="review-answers">
 
-        <div>
-          <strong>${names[0]}</strong>
-          <span>${answerA}/5</span>
-        </div>
+      <div
+        class="review-answer-buttons"
+        id="reviewAnswersA"
+      ></div>
 
-        <div>
-          <strong>${names[1]}</strong>
-          <span>${answerB}/5</span>
-        </div>
-
-      </div>
-
-      <div class="review-similarity">
-        ${similarity}% similarity
-      </div>
-
-    `;
+    </div>
 
 
-    review.appendChild(
-      answerBox
-    );
+    <div class="review-person">
 
-  });
+      <p class="review-person-name">
+        <span id="reviewNameB"></span>'s answer
+      </p>
 
 
-  const viewButton =
-    document.getElementById(
-      "viewAnswersButton"
+      <div
+        class="review-answer-buttons"
+        id="reviewAnswersB"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="review-similarity"
+      id="reviewSimilarity"
+    ></div>
+
+
+    <div class="review-navigation">
+
+      <button
+        type="button"
+        id="previousReview"
+        onclick="previousReviewQuestion()"
+      >
+        ← Previous
+      </button>
+
+
+      <button
+        type="button"
+        id="nextReview"
+        onclick="nextReviewQuestion()"
+      >
+        Next →
+      </button>
+
+    </div>
+
+  `;
+
+
+  const scienceNote =
+    document.querySelector(
+      ".science-note"
     );
 
 
   resultScreen.insertBefore(
     review,
-    viewButton.nextSibling
+    scienceNote
+  );
+}
+
+
+// ================================
+// SHOW REVIEW QUESTION
+// ================================
+
+function showReviewQuestion() {
+
+  const current =
+    questions[reviewQuestion];
+
+
+  const answerA =
+    answers[0][reviewQuestion];
+
+
+  const answerB =
+    answers[1][reviewQuestion];
+
+
+  const difference =
+    Math.abs(
+      answerA - answerB
+    );
+
+
+  const similarity =
+    getSimilarity(difference);
+
+
+  document
+    .getElementById("reviewCount")
+    .textContent =
+    `${reviewQuestion + 1} / ${questions.length}`;
+
+
+  document
+    .getElementById("reviewProgressBar")
+    .style.width =
+    `${((reviewQuestion + 1) / questions.length) * 100}%`;
+
+
+  document
+    .getElementById("reviewCategory")
+    .textContent =
+    current[1];
+
+
+  document
+    .getElementById("reviewQuestionText")
+    .textContent =
+    current[0];
+
+
+  document
+    .getElementById("reviewNameA")
+    .textContent =
+    names[0];
+
+
+  document
+    .getElementById("reviewNameB")
+    .textContent =
+    names[1];
+
+
+  createReviewAnswers(
+    "reviewAnswersA",
+    answerA
   );
 
 
-  viewButton.textContent =
-    "Hide your answers ↑";
+  createReviewAnswers(
+    "reviewAnswersB",
+    answerB
+  );
 
+
+  document
+    .getElementById("reviewSimilarity")
+    .textContent =
+    `${similarity}% similarity`;
+
+
+  document
+    .getElementById("previousReview")
+    .disabled =
+    reviewQuestion === 0;
+
+
+  document
+    .getElementById("nextReview")
+    .textContent =
+    reviewQuestion === questions.length - 1
+      ? "Finish ✓"
+      : "Next →";
+}
+
+
+// ================================
+// CREATE HIGHLIGHTED ANSWERS
+// ================================
+
+function createReviewAnswers(
+  containerId,
+  selectedAnswer
+) {
+
+  const container =
+    document.getElementById(
+      containerId
+    );
+
+
+  container.innerHTML = "";
+
+
+  const labels = [
+    "Not me",
+    "Mostly not me",
+    "Sometimes",
+    "Mostly me",
+    "Definitely me"
+  ];
+
+
+  labels.forEach((label, index) => {
+
+    const value =
+      index + 1;
+
+
+    const button =
+      document.createElement("div");
+
+
+    button.className =
+      "review-answer-button";
+
+
+    if (value === selectedAnswer) {
+
+      button.classList.add(
+        "review-selected"
+      );
+
+    }
+
+
+    button.innerHTML = `
+
+      <strong>${value}</strong>
+
+      <span>${label}</span>
+
+    `;
+
+
+    container.appendChild(
+      button
+    );
+
+  });
+}
+
+
+// ================================
+// NEXT REVIEW QUESTION
+// ================================
+
+function nextReviewQuestion() {
+
+  if (
+    reviewQuestion <
+    questions.length - 1
+  ) {
+
+    reviewQuestion++;
+
+    showReviewQuestion();
+
+  }
+
+  else {
+
+    closeAnswerReview();
+
+  }
+}
+
+
+// ================================
+// PREVIOUS REVIEW QUESTION
+// ================================
+
+function previousReviewQuestion() {
+
+  if (reviewQuestion > 0) {
+
+    reviewQuestion--;
+
+    showReviewQuestion();
+
+  }
+}
+
+
+// ================================
+// CLOSE ANSWER REVIEW
+// ================================
+
+function closeAnswerReview() {
+
+  const review =
+    document.getElementById(
+      "reviewScreen"
+    );
+
+
+  if (review) {
+    review.remove();
+  }
+
+
+  const resultScreen =
+    document.getElementById(
+      "resultScreen"
+    );
+
+
+  resultScreen
+    .classList
+    .remove("review-mode");
+
+
+  document
+    .querySelector(".result-intro")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("resultNames")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("percentage")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .querySelector(".similar-label")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("resultDescription")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .querySelector(".divider")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .querySelector("h3")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("categoryResults")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .querySelector(".science-note")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("viewAnswersButton")
+    .classList
+    .remove("hidden");
 }
 
 
@@ -773,7 +1047,5 @@ function animatePercentage(
       element.textContent =
         current + "%";
 
-
     }, 20);
-
 }
