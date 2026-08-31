@@ -1,6 +1,4 @@
 ```javascript
-alert("SCRIPT IS WORKING");
-
 const questions = [
   ["I prefer having a few close friends rather than lots of friends.", "Social"],
   ["I enjoy being the centre of attention.", "Social"],
@@ -49,16 +47,18 @@ const answerLabels = [
 
 let names = ["", ""];
 let answers = [[], []];
-let currentPerson = 0;
-let currentQuestion = 0;
+let person = 0;
+let question = 0;
 let reviewQuestion = 0;
 
+
+// START EXPERIMENT
 
 function startTest() {
   const nameA = document.getElementById("nameA").value.trim();
   const nameB = document.getElementById("nameB").value.trim();
 
-  if (nameA === "" || nameB === "") {
+  if (!nameA || !nameB) {
     alert("Please enter both names first!");
     return;
   }
@@ -67,8 +67,8 @@ function startTest() {
   names[1] = nameB;
 
   answers = [[], []];
-  currentPerson = 0;
-  currentQuestion = 0;
+  person = 0;
+  question = 0;
 
   document.getElementById("startScreen").classList.add("hidden");
   document.getElementById("quizScreen").classList.remove("hidden");
@@ -77,14 +77,19 @@ function startTest() {
 }
 
 
+// SHOW QUESTION
+
 function showQuestion() {
-  const current = questions[currentQuestion];
+  const current = questions[question];
 
   document.getElementById("personLabel").textContent =
-    names[currentPerson] + "'s answers";
+    names[person] + "'s answers";
 
   document.getElementById("questionCount").textContent =
-    `${currentQuestion + 1} / ${questions.length}`;
+    `${question + 1} / ${questions.length}`;
+
+  document.getElementById("progressBar").style.width =
+    `${((question + 1) / questions.length) * 100}%`;
 
   document.getElementById("categoryLabel").textContent =
     current[1];
@@ -92,12 +97,7 @@ function showQuestion() {
   document.getElementById("questionText").textContent =
     current[0];
 
-  document.getElementById("progressBar").style.width =
-    `${((currentQuestion + 1) / questions.length) * 100}%`;
-
-  const buttons = document.querySelectorAll(".answers button");
-
-  buttons.forEach(button => {
+  document.querySelectorAll(".answers button").forEach(button => {
     button.classList.remove("selected");
   });
 
@@ -105,12 +105,12 @@ function showQuestion() {
 }
 
 
+// CHOOSE ANSWER
+
 function chooseAnswer(value, button) {
-  answers[currentPerson][currentQuestion] = value;
+  answers[person][question] = value;
 
-  const buttons = document.querySelectorAll(".answers button");
-
-  buttons.forEach(btn => {
+  document.querySelectorAll(".answers button").forEach(btn => {
     btn.classList.remove("selected");
   });
 
@@ -120,21 +120,23 @@ function chooseAnswer(value, button) {
 }
 
 
+// NEXT QUESTION
+
 function nextQuestion() {
-  if (answers[currentPerson][currentQuestion] === undefined) {
+  if (answers[person][question] === undefined) {
     return;
   }
 
-  currentQuestion++;
+  question++;
 
-  if (currentQuestion < questions.length) {
+  if (question < questions.length) {
     showQuestion();
     return;
   }
 
-  if (currentPerson === 0) {
-    currentPerson = 1;
-    currentQuestion = 0;
+  if (person === 0) {
+    person = 1;
+    question = 0;
 
     alert(
       "Friend 1 is finished!\n\n" +
@@ -147,17 +149,18 @@ function nextQuestion() {
     return;
   }
 
-  calculateResults();
+  calculateResult();
 }
 
 
-function calculateResults() {
+// CALCULATE RESULT
+
+function calculateResult() {
   let totalDifference = 0;
+  const categoryData = {};
 
-  const categories = {};
-
-  questions.forEach((question, index) => {
-    const category = question[1];
+  questions.forEach((item, index) => {
+    const category = item[1];
 
     const answerA = answers[0][index];
     const answerB = answers[1][index];
@@ -166,30 +169,32 @@ function calculateResults() {
 
     totalDifference += difference;
 
-    if (!categories[category]) {
-      categories[category] = {
+    if (!categoryData[category]) {
+      categoryData[category] = {
         difference: 0,
-        questions: 0
+        count: 0
       };
     }
 
-    categories[category].difference += difference;
-    categories[category].questions++;
+    categoryData[category].difference += difference;
+    categoryData[category].count++;
   });
 
   const maximumDifference = questions.length * 4;
 
   let percentage = Math.round(
-    100 - (totalDifference / maximumDifference * 100)
+    100 - (totalDifference / maximumDifference) * 100
   );
 
   percentage = Math.max(0, Math.min(100, percentage));
 
-  showResults(percentage, categories);
+  showResult(percentage, categoryData);
 }
 
 
-function showResults(percentage, categories) {
+// SHOW RESULT
+
+function showResult(percentage, categoryData) {
   document.getElementById("quizScreen").classList.add("hidden");
   document.getElementById("resultScreen").classList.remove("hidden");
 
@@ -197,22 +202,20 @@ function showResults(percentage, categories) {
     `${names[0]} + ${names[1]}`;
 
   document.getElementById("resultDescription").textContent =
-    getResultDescription(percentage);
+    getDescription(percentage);
 
   animatePercentage(percentage);
 
-  const categoryContainer =
-    document.getElementById("categoryResults");
+  const container = document.getElementById("categoryResults");
+  container.innerHTML = "";
 
-  categoryContainer.innerHTML = "";
+  Object.keys(categoryData).forEach(category => {
+    const data = categoryData[category];
 
-  Object.keys(categories).forEach(category => {
-    const data = categories[category];
-
-    const maxDifference = data.questions * 4;
+    const maxDifference = data.count * 4;
 
     const score = Math.round(
-      100 - (data.difference / maxDifference * 100)
+      100 - (data.difference / maxDifference) * 100
     );
 
     const result = document.createElement("div");
@@ -229,14 +232,16 @@ function showResults(percentage, categories) {
       </div>
     `;
 
-    categoryContainer.appendChild(result);
+    container.appendChild(result);
   });
 }
 
 
-function getResultDescription(score) {
+// DESCRIPTION
+
+function getDescription(score) {
   if (score >= 90) {
-    return "You're practically personality twins. Your answers matched incredibly closely!";
+    return "You're practically personality twins! Your answers matched incredibly closely.";
   }
 
   if (score >= 75) {
@@ -255,29 +260,31 @@ function getResultDescription(score) {
     return "You two definitely have some opposite personalities going on!";
   }
 
-  return "You really are opposites! Your answers were dramatically different across the experiment.";
+  return "You really are opposites! Your answers were very different across the experiment.";
 }
 
 
-function animatePercentage(finalScore) {
+// PERCENTAGE ANIMATION
+
+function animatePercentage(finalNumber) {
   const element = document.getElementById("percentage");
 
-  let number = 0;
-
-  element.textContent = "0%";
+  let current = 0;
 
   const timer = setInterval(() => {
-    number += 2;
+    current += 2;
 
-    if (number >= finalScore) {
-      number = finalScore;
+    if (current >= finalNumber) {
+      current = finalNumber;
       clearInterval(timer);
     }
 
-    element.textContent = number + "%";
+    element.textContent = current + "%";
   }, 20);
 }
 
+
+// ANSWER REVIEW
 
 function openAnswerReview() {
   document.getElementById("viewAnswersButton").classList.add("hidden");
@@ -302,10 +309,10 @@ function openAnswerReview() {
 
 
 function createReviewScreen() {
-  const existing = document.getElementById("reviewScreen");
+  const oldReview = document.getElementById("reviewScreen");
 
-  if (existing) {
-    existing.remove();
+  if (oldReview) {
+    oldReview.remove();
   }
 
   const review = document.createElement("div");
@@ -342,9 +349,11 @@ function createReviewScreen() {
     ></div>
 
     <div class="question-card">
+
       <h2 id="reviewQuestionText"></h2>
 
       <div class="review-person">
+
         <p class="review-person-name">
           <strong id="reviewNameA"></strong>
         </p>
@@ -353,9 +362,11 @@ function createReviewScreen() {
           id="reviewAnswersA"
           class="review-answer-buttons"
         ></div>
+
       </div>
 
       <div class="review-person">
+
         <p class="review-person-name">
           <strong id="reviewNameB"></strong>
         </p>
@@ -364,6 +375,7 @@ function createReviewScreen() {
           id="reviewAnswersB"
           class="review-answer-buttons"
         ></div>
+
       </div>
 
       <div
@@ -372,6 +384,7 @@ function createReviewScreen() {
       ></div>
 
       <div class="review-navigation">
+
         <button
           id="previousReview"
           type="button"
@@ -387,7 +400,9 @@ function createReviewScreen() {
         >
           Next →
         </button>
+
       </div>
+
     </div>
   `;
 
@@ -396,7 +411,7 @@ function createReviewScreen() {
 
 
 function showReviewQuestion() {
-  const question = questions[reviewQuestion];
+  const current = questions[reviewQuestion];
 
   const answerA = answers[0][reviewQuestion];
   const answerB = answers[1][reviewQuestion];
@@ -404,7 +419,7 @@ function showReviewQuestion() {
   const difference = Math.abs(answerA - answerB);
 
   const similarity = Math.round(
-    100 - (difference / 4 * 100)
+    100 - (difference / 4) * 100
   );
 
   document.getElementById("reviewCount").textContent =
@@ -414,10 +429,10 @@ function showReviewQuestion() {
     `${((reviewQuestion + 1) / questions.length) * 100}%`;
 
   document.getElementById("reviewCategory").textContent =
-    question[1];
+    current[1];
 
   document.getElementById("reviewQuestionText").textContent =
-    question[0];
+    current[0];
 
   document.getElementById("reviewNameA").textContent =
     names[0];
@@ -447,19 +462,17 @@ function createReviewAnswers(containerId, selectedAnswer) {
   container.innerHTML = "";
 
   answerLabels.forEach((label, index) => {
-    const value = index + 1;
-
     const option = document.createElement("div");
 
     option.className = "review-answer-button";
 
-    if (value === selectedAnswer) {
+    if (index + 1 === selectedAnswer) {
       option.classList.add("review-selected");
     }
 
     option.innerHTML = `
       <span class="answer-number">
-        ${value}
+        ${index + 1}
       </span>
 
       <span>
@@ -471,6 +484,8 @@ function createReviewAnswers(containerId, selectedAnswer) {
   });
 }
 
+
+// REVIEW NAVIGATION
 
 function nextReviewQuestion() {
   if (reviewQuestion < questions.length - 1) {
@@ -489,6 +504,8 @@ function previousReviewQuestion() {
   }
 }
 
+
+// CLOSE REVIEW
 
 function closeAnswerReview() {
   const review = document.getElementById("reviewScreen");
@@ -513,9 +530,7 @@ function closeAnswerReview() {
 }
 
 
-// ================================
 // KEYBOARD CONTROLS
-// ================================
 
 document.addEventListener("keydown", function(event) {
 
@@ -529,10 +544,9 @@ document.addEventListener("keydown", function(event) {
   }
 
   if (event.key === "Enter") {
+    const nextButton = document.getElementById("nextButton");
 
-    const next = document.getElementById("nextButton");
-
-    if (next && !next.disabled) {
+    if (nextButton && !nextButton.disabled) {
       nextQuestion();
     }
 
@@ -540,20 +554,18 @@ document.addEventListener("keydown", function(event) {
     return;
   }
 
-  if (
-    ["1", "2", "3", "4", "5"].includes(event.key)
-  ) {
+  const number = Number(event.key);
 
-    const value = Number(event.key);
+  if (number >= 1 && number <= 5) {
 
     const buttons =
       document.querySelectorAll(".answers button");
 
-    if (buttons[value - 1]) {
+    if (buttons[number - 1]) {
 
       chooseAnswer(
-        value,
-        buttons[value - 1]
+        number,
+        buttons[number - 1]
       );
 
       event.preventDefault();
