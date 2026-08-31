@@ -5,6 +5,10 @@
 // ========================================
 
 
+// ========================================
+// QUESTIONS
+// ========================================
+
 const questions = [
 
   // SOCIAL
@@ -51,6 +55,10 @@ const questions = [
 
 ];
 
+
+// ========================================
+// VARIABLES
+// ========================================
 
 let names = ["", ""];
 
@@ -246,7 +254,10 @@ function nextQuestion() {
   question++;
 
 
-  // Friend 1 has finished
+  // ====================================
+  // FRIEND 1 FINISHED
+  // ====================================
+
   if (
     question >=
     questions.length
@@ -274,7 +285,10 @@ function nextQuestion() {
     }
 
 
-    // Both friends have finished
+    // ==================================
+    // BOTH FRIENDS FINISHED
+    // ==================================
+
     calculateResult();
 
     return;
@@ -587,7 +601,7 @@ function animatePercentage(
 
 
 // ========================================
-// VIEW ANSWERS
+// OPEN ANSWER REVIEW
 // ========================================
 
 function openAnswerReview() {
@@ -663,7 +677,7 @@ function openAnswerReview() {
 
 
 // ========================================
-// CREATE REVIEW SCREEN
+// CREATE ANSWER REVIEW
 // ========================================
 
 function createReviewScreen() {
@@ -1106,7 +1120,14 @@ function closeAnswerReview() {
 
 
 // ========================================
-// KEYBOARD ANSWERS
+// KEYBOARD CONTROLS
+//
+// 1 = first answer
+// 2 = second answer
+// 3 = third answer
+// 4 = fourth answer
+// 5 = fifth answer
+// ENTER = next question
 // ========================================
 
 document.addEventListener(
@@ -1119,7 +1140,7 @@ document.addEventListener(
       );
 
 
-    // Only work during the quiz
+    // Only work while taking the quiz
     if (
       !quizScreen ||
       quizScreen.classList.contains(
@@ -1132,10 +1153,48 @@ document.addEventListener(
     }
 
 
+    // ====================================
+    // ENTER = NEXT QUESTION
+    // ====================================
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      const nextButton =
+        document.getElementById(
+          "nextButton"
+        );
+
+
+      // Only move forward if an answer
+      // has been selected
+      if (
+        nextButton &&
+        !nextButton.disabled
+      ) {
+
+        nextQuestion();
+
+      }
+
+
+      event.preventDefault();
+
+      return;
+
+    }
+
+
+    // ====================================
+    // 1-5 = SELECT ANSWER
+    // ====================================
+
     let value = null;
 
 
     // Number row
+
     if (
       event.key === "1" ||
       event.code === "Digit1"
@@ -1187,6 +1246,7 @@ document.addEventListener(
 
 
     // Number pad
+
     if (
       event.code === "Numpad1"
     ) {
@@ -1233,6 +1293,7 @@ document.addEventListener(
 
 
     // Ignore every other key
+
     if (
       value === null
     ) {
@@ -1242,11 +1303,15 @@ document.addEventListener(
     }
 
 
+    // Find the answer buttons
+
     const buttons =
       document.querySelectorAll(
         ".answers button"
       );
 
+
+    // Select the matching answer
 
     if (
       buttons.length >= value
