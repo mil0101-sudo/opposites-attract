@@ -1,7 +1,7 @@
 ```javascript
 // ========================================
 // DO OPPOSITES REALLY ATTRACT?
-// COMPLETE SCRIPT
+// COMPLETE JAVASCRIPT
 // ========================================
 
 
@@ -97,7 +97,6 @@ function startTest() {
 
 
   names[0] = nameA;
-
   names[1] = nameB;
 
 
@@ -108,7 +107,6 @@ function startTest() {
 
 
   person = 0;
-
   question = 0;
 
 
@@ -175,15 +173,13 @@ function showQuestion() {
     );
 
 
-  buttons.forEach(
-    button => {
+  buttons.forEach(button => {
 
-      button.classList.remove(
-        "selected"
-      );
+    button.classList.remove(
+      "selected"
+    );
 
-    }
-  );
+  });
 
 
   document
@@ -212,15 +208,13 @@ function chooseAnswer(
     );
 
 
-  buttons.forEach(
-    btn => {
+  buttons.forEach(btn => {
 
-      btn.classList.remove(
-        "selected"
-      );
+    btn.classList.remove(
+      "selected"
+    );
 
-    }
-  );
+  });
 
 
   button.classList.add(
@@ -254,10 +248,7 @@ function nextQuestion() {
   question++;
 
 
-  // ====================================
   // FRIEND 1 FINISHED
-  // ====================================
-
   if (
     question >=
     questions.length
@@ -285,10 +276,7 @@ function nextQuestion() {
     }
 
 
-    // ==================================
     // BOTH FRIENDS FINISHED
-    // ==================================
-
     calculateResult();
 
     return;
@@ -302,7 +290,7 @@ function nextQuestion() {
 
 
 // ========================================
-// SIMILARITY SCORE
+// SIMILARITY
 // ========================================
 
 function getSimilarity(
@@ -338,7 +326,6 @@ function calculateResult() {
 
   let totalSimilarity = 0;
 
-
   const categoryScores = {};
 
   const categoryMaximums = {};
@@ -353,7 +340,6 @@ function calculateResult() {
 
       const answerA =
         answers[0][i];
-
 
       const answerB =
         answers[1][i];
@@ -390,7 +376,6 @@ function calculateResult() {
 
       categoryScores[category] +=
         similarity;
-
 
       categoryMaximums[category] +=
         100;
@@ -498,46 +483,44 @@ function showResult(
 
 
   Object.keys(categoryScores)
-    .forEach(
-      category => {
+    .forEach(category => {
 
-        const score =
-          Math.round(
-            categoryScores[category] /
-            categoryMaximums[category] *
-            100
-          );
-
-
-        const box =
-          document.createElement(
-            "div"
-          );
-
-
-        box.className =
-          "category-result";
-
-
-        box.innerHTML = `
-
-          <div class="category-result-name">
-            ${category}
-          </div>
-
-          <div class="category-result-score">
-            ${score}%
-          </div>
-
-        `;
-
-
-        results.appendChild(
-          box
+      const score =
+        Math.round(
+          categoryScores[category] /
+          categoryMaximums[category] *
+          100
         );
 
-      }
-    );
+
+      const box =
+        document.createElement(
+          "div"
+        );
+
+
+      box.className =
+        "category-result";
+
+
+      box.innerHTML = `
+
+        <div class="category-result-name">
+          ${category}
+        </div>
+
+        <div class="category-result-score">
+          ${score}%
+        </div>
+
+      `;
+
+
+      results.appendChild(
+        box
+      );
+
+    });
 
 
   animatePercentage(
@@ -548,7 +531,7 @@ function showResult(
 
 
 // ========================================
-// ANIMATE PERCENTAGE
+// ANIMATE RESULT
 // ========================================
 
 function animatePercentage(
@@ -569,101 +552,72 @@ function animatePercentage(
 
 
   const interval =
-    setInterval(
-      () => {
+    setInterval(() => {
 
-        current += 2;
-
-
-        if (
-          current >=
-          finalNumber
-        ) {
-
-          current =
-            finalNumber;
-
-          clearInterval(
-            interval
-          );
-
-        }
+      current += 2;
 
 
-        element.textContent =
-          current + "%";
+      if (
+        current >= finalNumber
+      ) {
 
-      },
-      20
-    );
+        current =
+          finalNumber;
+
+        clearInterval(
+          interval
+        );
+
+      }
+
+
+      element.textContent =
+        current + "%";
+
+    }, 20);
 
 }
 
 
 // ========================================
-// OPEN ANSWER REVIEW
+// ANSWER REVIEW
 // ========================================
 
 function openAnswerReview() {
 
-  document
-    .querySelector(".result-intro")
-    .classList
-    .add("hidden");
+  const elementsToHide = [
+
+    ".result-intro",
+    "#resultNames",
+    ".similar-label",
+    "#percentage",
+    "#resultDescription",
+    ".divider",
+    "#resultScreen h3",
+    "#categoryResults",
+    ".science-note",
+    "#viewAnswersButton"
+
+  ];
 
 
-  document
-    .getElementById("resultNames")
-    .classList
-    .add("hidden");
+  elementsToHide.forEach(selector => {
+
+    const element =
+      document.querySelector(
+        selector
+      );
 
 
-  document
-    .getElementById("percentage")
-    .classList
-    .add("hidden");
+    if (element) {
 
+      element.classList.add(
+        "hidden"
+      );
 
-  document
-    .querySelector(".similar-label")
-    .classList
-    .add("hidden");
+    }
 
-
-  document
-    .getElementById("resultDescription")
-    .classList
-    .add("hidden");
-
-
-  document
-    .querySelector(".divider")
-    .classList
-    .add("hidden");
-
-
-  document
-    .querySelector("#resultScreen h3")
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById("categoryResults")
-    .classList
-    .add("hidden");
-
-
-  document
-    .querySelector(".science-note")
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById("viewAnswersButton")
-    .classList
-    .add("hidden");
+  });
 
 
   reviewQuestion = 0;
@@ -677,7 +631,7 @@ function openAnswerReview() {
 
 
 // ========================================
-// CREATE ANSWER REVIEW
+// CREATE REVIEW SCREEN
 // ========================================
 
 function createReviewScreen() {
@@ -913,7 +867,7 @@ function showReviewQuestion() {
 
 
 // ========================================
-// CREATE REVIEW ANSWERS
+// REVIEW ANSWER OPTIONS
 // ========================================
 
 function createReviewAnswers(
@@ -963,8 +917,7 @@ function createReviewAnswers(
 
 
       if (
-        value ===
-        selectedAnswer
+        value === selectedAnswer
       ) {
 
         button.classList.add(
@@ -976,9 +929,13 @@ function createReviewAnswers(
 
       button.innerHTML = `
 
-        <strong>${value}</strong>
+        <strong>
+          ${value}
+        </strong>
 
-        <span>${label}</span>
+        <span>
+          ${label}
+        </span>
 
       `;
 
@@ -994,7 +951,7 @@ function createReviewAnswers(
 
 
 // ========================================
-// NEXT REVIEW QUESTION
+// NEXT REVIEW
 // ========================================
 
 function nextReviewQuestion() {
@@ -1020,7 +977,7 @@ function nextReviewQuestion() {
 
 
 // ========================================
-// PREVIOUS REVIEW QUESTION
+// PREVIOUS REVIEW
 // ========================================
 
 function previousReviewQuestion() {
@@ -1039,7 +996,7 @@ function previousReviewQuestion() {
 
 
 // ========================================
-// CLOSE ANSWER REVIEW
+// CLOSE REVIEW
 // ========================================
 
 function closeAnswerReview() {
@@ -1057,64 +1014,39 @@ function closeAnswerReview() {
   }
 
 
-  document
-    .querySelector(".result-intro")
-    .classList
-    .remove("hidden");
+  const elementsToShow = [
+
+    ".result-intro",
+    "#resultNames",
+    ".similar-label",
+    "#percentage",
+    "#resultDescription",
+    ".divider",
+    "#resultScreen h3",
+    "#categoryResults",
+    ".science-note",
+    "#viewAnswersButton"
+
+  ];
 
 
-  document
-    .getElementById("resultNames")
-    .classList
-    .remove("hidden");
+  elementsToShow.forEach(selector => {
+
+    const element =
+      document.querySelector(
+        selector
+      );
 
 
-  document
-    .getElementById("percentage")
-    .classList
-    .remove("hidden");
+    if (element) {
 
+      element.classList.remove(
+        "hidden"
+      );
 
-  document
-    .querySelector(".similar-label")
-    .classList
-    .remove("hidden");
+    }
 
-
-  document
-    .getElementById("resultDescription")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .querySelector(".divider")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .querySelector("#resultScreen h3")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById("categoryResults")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .querySelector(".science-note")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById("viewAnswersButton")
-    .classList
-    .remove("hidden");
+  });
 
 }
 
@@ -1122,12 +1054,12 @@ function closeAnswerReview() {
 // ========================================
 // KEYBOARD CONTROLS
 //
-// 1 = first answer
-// 2 = second answer
-// 3 = third answer
-// 4 = fourth answer
-// 5 = fifth answer
-// ENTER = next question
+// 1 = answer 1
+// 2 = answer 2
+// 3 = answer 3
+// 4 = answer 4
+// 5 = answer 5
+// ENTER = next
 // ========================================
 
 document.addEventListener(
@@ -1140,7 +1072,7 @@ document.addEventListener(
       );
 
 
-    // Only work while taking the quiz
+    // Only work during the quiz
     if (
       !quizScreen ||
       quizScreen.classList.contains(
@@ -1154,7 +1086,7 @@ document.addEventListener(
 
 
     // ====================================
-    // ENTER = NEXT QUESTION
+    // ENTER = NEXT
     // ====================================
 
     if (
@@ -1167,8 +1099,6 @@ document.addEventListener(
         );
 
 
-      // Only move forward if an answer
-      // has been selected
       if (
         nextButton &&
         !nextButton.disabled
@@ -1187,67 +1117,15 @@ document.addEventListener(
 
 
     // ====================================
-    // 1-5 = SELECT ANSWER
+    // 1-5 = ANSWERS
     // ====================================
 
     let value = null;
 
 
-    // Number row
-
     if (
       event.key === "1" ||
-      event.code === "Digit1"
-    ) {
-
-      value = 1;
-
-    }
-
-
-    if (
-      event.key === "2" ||
-      event.code === "Digit2"
-    ) {
-
-      value = 2;
-
-    }
-
-
-    if (
-      event.key === "3" ||
-      event.code === "Digit3"
-    ) {
-
-      value = 3;
-
-    }
-
-
-    if (
-      event.key === "4" ||
-      event.code === "Digit4"
-    ) {
-
-      value = 4;
-
-    }
-
-
-    if (
-      event.key === "5" ||
-      event.code === "Digit5"
-    ) {
-
-      value = 5;
-
-    }
-
-
-    // Number pad
-
-    if (
+      event.code === "Digit1" ||
       event.code === "Numpad1"
     ) {
 
@@ -1257,6 +1135,8 @@ document.addEventListener(
 
 
     if (
+      event.key === "2" ||
+      event.code === "Digit2" ||
       event.code === "Numpad2"
     ) {
 
@@ -1266,6 +1146,8 @@ document.addEventListener(
 
 
     if (
+      event.key === "3" ||
+      event.code === "Digit3" ||
       event.code === "Numpad3"
     ) {
 
@@ -1275,6 +1157,8 @@ document.addEventListener(
 
 
     if (
+      event.key === "4" ||
+      event.code === "Digit4" ||
       event.code === "Numpad4"
     ) {
 
@@ -1284,6 +1168,8 @@ document.addEventListener(
 
 
     if (
+      event.key === "5" ||
+      event.code === "Digit5" ||
       event.code === "Numpad5"
     ) {
 
@@ -1292,26 +1178,18 @@ document.addEventListener(
     }
 
 
-    // Ignore every other key
-
-    if (
-      value === null
-    ) {
+    if (value === null) {
 
       return;
 
     }
 
 
-    // Find the answer buttons
-
     const buttons =
       document.querySelectorAll(
         ".answers button"
       );
 
-
-    // Select the matching answer
 
     if (
       buttons.length >= value
