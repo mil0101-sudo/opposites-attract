@@ -1,4 +1,6 @@
 ```javascript
+alert("SCRIPT IS WORKING");
+
 const questions = [
   ["I prefer having a few close friends rather than lots of friends.", "Social"],
   ["I enjoy being the centre of attention.", "Social"],
@@ -37,7 +39,6 @@ const questions = [
   ["I would rather work alone than in a group.", "Independence"]
 ];
 
-
 const answerLabels = [
   "Not me",
   "Mostly not me",
@@ -46,7 +47,6 @@ const answerLabels = [
   "Definitely me"
 ];
 
-
 let names = ["", ""];
 let answers = [[], []];
 let currentPerson = 0;
@@ -54,12 +54,7 @@ let currentQuestion = 0;
 let reviewQuestion = 0;
 
 
-// ================================
-// START
-// ================================
-
 function startTest() {
-
   const nameA = document.getElementById("nameA").value.trim();
   const nameB = document.getElementById("nameB").value.trim();
 
@@ -82,13 +77,8 @@ function startTest() {
 }
 
 
-// ================================
-// SHOW QUESTION
-// ================================
-
 function showQuestion() {
-
-  const question = questions[currentQuestion];
+  const current = questions[currentQuestion];
 
   document.getElementById("personLabel").textContent =
     names[currentPerson] + "'s answers";
@@ -97,10 +87,10 @@ function showQuestion() {
     `${currentQuestion + 1} / ${questions.length}`;
 
   document.getElementById("categoryLabel").textContent =
-    question[1];
+    current[1];
 
   document.getElementById("questionText").textContent =
-    question[0];
+    current[0];
 
   document.getElementById("progressBar").style.width =
     `${((currentQuestion + 1) / questions.length) * 100}%`;
@@ -115,12 +105,7 @@ function showQuestion() {
 }
 
 
-// ================================
-// SELECT ANSWER
-// ================================
-
 function chooseAnswer(value, button) {
-
   answers[currentPerson][currentQuestion] = value;
 
   const buttons = document.querySelectorAll(".answers button");
@@ -135,12 +120,7 @@ function chooseAnswer(value, button) {
 }
 
 
-// ================================
-// NEXT QUESTION
-// ================================
-
 function nextQuestion() {
-
   if (answers[currentPerson][currentQuestion] === undefined) {
     return;
   }
@@ -152,40 +132,31 @@ function nextQuestion() {
     return;
   }
 
-  // Friend 1 finished
   if (currentPerson === 0) {
-
     currentPerson = 1;
     currentQuestion = 0;
 
     alert(
-      "Great! Friend 1 is finished.\n\n" +
-      "Now pass the device to " +
+      "Friend 1 is finished!\n\n" +
+      "Pass the device to " +
       names[1] +
-      " so they can answer without seeing the other answers."
+      ". Don't peek at the answers!"
     );
 
     showQuestion();
     return;
   }
 
-  // Both finished
   calculateResults();
 }
 
 
-// ================================
-// CALCULATE RESULTS
-// ================================
-
 function calculateResults() {
-
   let totalDifference = 0;
 
   const categories = {};
 
   questions.forEach((question, index) => {
-
     const category = question[1];
 
     const answerA = answers[0][index];
@@ -206,33 +177,19 @@ function calculateResults() {
     categories[category].questions++;
   });
 
+  const maximumDifference = questions.length * 4;
 
-  // Maximum possible difference is 4.
-  // This makes 0% achievable when answers are opposite.
-  const maximumDifference =
-    questions.length * 4;
+  let percentage = Math.round(
+    100 - (totalDifference / maximumDifference * 100)
+  );
 
-  let percentage =
-    Math.round(
-      100 -
-      (totalDifference / maximumDifference * 100)
-    );
-
-
-  if (percentage < 0) percentage = 0;
-  if (percentage > 100) percentage = 100;
-
+  percentage = Math.max(0, Math.min(100, percentage));
 
   showResults(percentage, categories);
 }
 
 
-// ================================
-// SHOW RESULTS
-// ================================
-
 function showResults(percentage, categories) {
-
   document.getElementById("quizScreen").classList.add("hidden");
   document.getElementById("resultScreen").classList.remove("hidden");
 
@@ -242,29 +199,21 @@ function showResults(percentage, categories) {
   document.getElementById("resultDescription").textContent =
     getResultDescription(percentage);
 
-
   animatePercentage(percentage);
-
 
   const categoryContainer =
     document.getElementById("categoryResults");
 
   categoryContainer.innerHTML = "";
 
-
   Object.keys(categories).forEach(category => {
-
     const data = categories[category];
 
-    const maxDifference =
-      data.questions * 4;
+    const maxDifference = data.questions * 4;
 
-    const score =
-      Math.round(
-        100 -
-        (data.difference / maxDifference * 100)
-      );
-
+    const score = Math.round(
+      100 - (data.difference / maxDifference * 100)
+    );
 
     const result = document.createElement("div");
 
@@ -285,12 +234,7 @@ function showResults(percentage, categories) {
 }
 
 
-// ================================
-// RESULT DESCRIPTION
-// ================================
-
 function getResultDescription(score) {
-
   if (score >= 90) {
     return "You're practically personality twins. Your answers matched incredibly closely!";
   }
@@ -315,22 +259,14 @@ function getResultDescription(score) {
 }
 
 
-// ================================
-// PERCENTAGE ANIMATION
-// ================================
-
 function animatePercentage(finalScore) {
-
-  const element =
-    document.getElementById("percentage");
+  const element = document.getElementById("percentage");
 
   let number = 0;
 
   element.textContent = "0%";
 
-
   const timer = setInterval(() => {
-
     number += 2;
 
     if (number >= finalScore) {
@@ -339,17 +275,11 @@ function animatePercentage(finalScore) {
     }
 
     element.textContent = number + "%";
-
   }, 20);
 }
 
 
-// ================================
-// ANSWER REVIEW
-// ================================
-
 function openAnswerReview() {
-
   document.getElementById("viewAnswersButton").classList.add("hidden");
 
   document.querySelector(".result-intro").classList.add("hidden");
@@ -364,7 +294,6 @@ function openAnswerReview() {
   document.getElementById("categoryResults").classList.add("hidden");
   document.querySelector(".science-note").classList.add("hidden");
 
-
   reviewQuestion = 0;
 
   createReviewScreen();
@@ -372,28 +301,18 @@ function openAnswerReview() {
 }
 
 
-// ================================
-// CREATE REVIEW
-// ================================
-
 function createReviewScreen() {
-
-  const existing =
-    document.getElementById("reviewScreen");
+  const existing = document.getElementById("reviewScreen");
 
   if (existing) {
     existing.remove();
   }
 
-
-  const review =
-    document.createElement("div");
+  const review = document.createElement("div");
 
   review.id = "reviewScreen";
 
-
   review.innerHTML = `
-
     <button
       type="button"
       class="back-results"
@@ -411,12 +330,10 @@ function createReviewScreen() {
     </div>
 
     <div class="progress-track">
-
       <div
         id="reviewProgressBar"
         class="progress-fill"
       ></div>
-
     </div>
 
     <div
@@ -425,11 +342,9 @@ function createReviewScreen() {
     ></div>
 
     <div class="question-card">
-
       <h2 id="reviewQuestionText"></h2>
 
       <div class="review-person">
-
         <p class="review-person-name">
           <strong id="reviewNameA"></strong>
         </p>
@@ -438,12 +353,9 @@ function createReviewScreen() {
           id="reviewAnswersA"
           class="review-answer-buttons"
         ></div>
-
       </div>
 
-
       <div class="review-person">
-
         <p class="review-person-name">
           <strong id="reviewNameB"></strong>
         </p>
@@ -452,18 +364,14 @@ function createReviewScreen() {
           id="reviewAnswersB"
           class="review-answer-buttons"
         ></div>
-
       </div>
-
 
       <div
         id="reviewSimilarity"
         class="review-similarity"
       ></div>
 
-
       <div class="review-navigation">
-
         <button
           id="previousReview"
           type="button"
@@ -479,41 +387,25 @@ function createReviewScreen() {
         >
           Next →
         </button>
-
       </div>
-
     </div>
   `;
-
 
   document.getElementById("resultScreen").appendChild(review);
 }
 
 
-// ================================
-// SHOW REVIEW QUESTION
-// ================================
-
 function showReviewQuestion() {
+  const question = questions[reviewQuestion];
 
-  const question =
-    questions[reviewQuestion];
+  const answerA = answers[0][reviewQuestion];
+  const answerB = answers[1][reviewQuestion];
 
-  const answerA =
-    answers[0][reviewQuestion];
+  const difference = Math.abs(answerA - answerB);
 
-  const answerB =
-    answers[1][reviewQuestion];
-
-  const difference =
-    Math.abs(answerA - answerB);
-
-  const similarity =
-    Math.round(
-      100 -
-      (difference / 4 * 100)
-    );
-
+  const similarity = Math.round(
+    100 - (difference / 4 * 100)
+  );
 
   document.getElementById("reviewCount").textContent =
     `${reviewQuestion + 1} / ${questions.length}`;
@@ -533,25 +425,14 @@ function showReviewQuestion() {
   document.getElementById("reviewNameB").textContent =
     names[1];
 
-
-  createReviewAnswers(
-    "reviewAnswersA",
-    answerA
-  );
-
-  createReviewAnswers(
-    "reviewAnswersB",
-    answerB
-  );
-
+  createReviewAnswers("reviewAnswersA", answerA);
+  createReviewAnswers("reviewAnswersB", answerB);
 
   document.getElementById("reviewSimilarity").textContent =
     `${similarity}% match on this question`;
 
-
   document.getElementById("previousReview").disabled =
     reviewQuestion === 0;
-
 
   document.getElementById("nextReview").textContent =
     reviewQuestion === questions.length - 1
@@ -560,36 +441,21 @@ function showReviewQuestion() {
 }
 
 
-// ================================
-// REVIEW ANSWERS
-// ================================
-
-function createReviewAnswers(
-  containerId,
-  selectedAnswer
-) {
-
-  const container =
-    document.getElementById(containerId);
+function createReviewAnswers(containerId, selectedAnswer) {
+  const container = document.getElementById(containerId);
 
   container.innerHTML = "";
 
-
   answerLabels.forEach((label, index) => {
-
     const value = index + 1;
 
-    const option =
-      document.createElement("div");
+    const option = document.createElement("div");
 
-    option.className =
-      "review-answer-button";
-
+    option.className = "review-answer-button";
 
     if (value === selectedAnswer) {
       option.classList.add("review-selected");
     }
-
 
     option.innerHTML = `
       <span class="answer-number">
@@ -601,62 +467,35 @@ function createReviewAnswers(
       </span>
     `;
 
-
     container.appendChild(option);
   });
 }
 
 
-// ================================
-// REVIEW NEXT
-// ================================
-
 function nextReviewQuestion() {
-
-  if (
-    reviewQuestion <
-    questions.length - 1
-  ) {
-
+  if (reviewQuestion < questions.length - 1) {
     reviewQuestion++;
     showReviewQuestion();
-
   } else {
-
     closeAnswerReview();
-
   }
 }
 
-
-// ================================
-// REVIEW PREVIOUS
-// ================================
 
 function previousReviewQuestion() {
-
   if (reviewQuestion > 0) {
-
     reviewQuestion--;
     showReviewQuestion();
-
   }
 }
 
 
-// ================================
-// CLOSE REVIEW
-// ================================
-
 function closeAnswerReview() {
-
-  const review =
-    document.getElementById("reviewScreen");
+  const review = document.getElementById("reviewScreen");
 
   if (review) {
     review.remove();
   }
-
 
   document.getElementById("viewAnswersButton").classList.remove("hidden");
 
@@ -680,9 +519,7 @@ function closeAnswerReview() {
 
 document.addEventListener("keydown", function(event) {
 
-  const quizScreen =
-    document.getElementById("quizScreen");
-
+  const quizScreen = document.getElementById("quizScreen");
 
   if (
     !quizScreen ||
@@ -691,32 +528,23 @@ document.addEventListener("keydown", function(event) {
     return;
   }
 
-
-  // ENTER = NEXT
-
   if (event.key === "Enter") {
 
-    const next =
-      document.getElementById("nextButton");
+    const next = document.getElementById("nextButton");
 
     if (next && !next.disabled) {
       nextQuestion();
     }
 
     event.preventDefault();
-
     return;
   }
-
-
-  // NUMBER KEYS = ANSWERS
 
   if (
     ["1", "2", "3", "4", "5"].includes(event.key)
   ) {
 
-    const value =
-      Number(event.key);
+    const value = Number(event.key);
 
     const buttons =
       document.querySelectorAll(".answers button");
@@ -731,6 +559,5 @@ document.addEventListener("keydown", function(event) {
       event.preventDefault();
     }
   }
-
 });
 ```
