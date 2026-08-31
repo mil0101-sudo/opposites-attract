@@ -1,3 +1,4 @@
+```javascript
 const questions = [
 
   // SOCIAL
@@ -54,9 +55,7 @@ let question = 0;
 let reviewQuestion = 0;
 
 
-// ================================
 // START TEST
-// ================================
 
 function startTest() {
 
@@ -97,9 +96,7 @@ function startTest() {
 }
 
 
-// ================================
 // SHOW QUESTION
-// ================================
 
 function showQuestion() {
 
@@ -152,9 +149,7 @@ function showQuestion() {
 }
 
 
-// ================================
 // CHOOSE ANSWER
-// ================================
 
 function chooseAnswer(value, button) {
 
@@ -179,9 +174,7 @@ function chooseAnswer(value, button) {
 }
 
 
-// ================================
 // NEXT QUESTION
-// ================================
 
 function nextQuestion() {
 
@@ -233,9 +226,23 @@ function nextQuestion() {
 }
 
 
-// ================================
+// SIMILARITY
+
+function getSimilarity(difference) {
+
+  if (difference === 0) return 100;
+
+  if (difference === 1) return 60;
+
+  if (difference === 2) return 30;
+
+  if (difference === 3) return 10;
+
+  return 0;
+}
+
+
 // CALCULATE RESULT
-// ================================
 
 function calculateResult() {
 
@@ -250,18 +257,19 @@ function calculateResult() {
     const category = item[1];
 
     const answerA = answers[0][i];
+
     const answerB = answers[1][i];
+
 
     const difference =
       Math.abs(answerA - answerB);
 
 
-    const similarityPercentage =
+    const similarity =
       getSimilarity(difference);
 
 
-    totalSimilarity +=
-      similarityPercentage;
+    totalSimilarity += similarity;
 
 
     if (!categoryScores[category]) {
@@ -272,8 +280,7 @@ function calculateResult() {
     }
 
 
-    categoryScores[category] +=
-      similarityPercentage;
+    categoryScores[category] += similarity;
 
     categoryMaximums[category] += 100;
 
@@ -295,35 +302,7 @@ function calculateResult() {
 }
 
 
-// ================================
-// SIMILARITY SCORING
-// ================================
-
-function getSimilarity(difference) {
-
-  if (difference === 0) {
-    return 100;
-  }
-
-  if (difference === 1) {
-    return 60;
-  }
-
-  if (difference === 2) {
-    return 30;
-  }
-
-  if (difference === 3) {
-    return 10;
-  }
-
-  return 0;
-}
-
-
-// ================================
 // SHOW RESULT
-// ================================
 
 function showResult(
   percentage,
@@ -338,7 +317,8 @@ function showResult(
 
   document
     .getElementById("resultScreen")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
 
 
   document
@@ -399,7 +379,9 @@ function showResult(
 
 
   const results =
-    document.getElementById("categoryResults");
+    document.getElementById(
+      "categoryResults"
+    );
 
 
   results.innerHTML = "";
@@ -425,6 +407,7 @@ function showResult(
 
 
       box.innerHTML = `
+
         <div class="category-result-name">
           ${category}
         </div>
@@ -432,6 +415,7 @@ function showResult(
         <div class="category-result-score">
           ${score}%
         </div>
+
       `;
 
 
@@ -440,137 +424,59 @@ function showResult(
     });
 
 
-  addViewAnswersButton();
-
   animatePercentage(percentage);
 }
 
 
-// ================================
-// ADD VIEW ANSWERS BUTTON
-// ================================
-
-function addViewAnswersButton() {
-
-  const resultScreen =
-    document.getElementById("resultScreen");
-
-
-  const oldButton =
-    document.getElementById(
-      "viewAnswersButton"
-    );
-
-
-  if (oldButton) {
-    oldButton.remove();
-  }
-
-
-  const button =
-    document.createElement("button");
-
-
-  button.id =
-    "viewAnswersButton";
-
-
-  button.className =
-    "main-button";
-
-
-  button.textContent =
-    "View your answers ↓";
-
-
-  button.onclick =
-    openAnswerReview;
-
-
-  const scienceNote =
-    document.querySelector(".science-note");
-
-
-  resultScreen.insertBefore(
-    button,
-    scienceNote
-  );
-}
-
-
-// ================================
 // OPEN ANSWER REVIEW
-// ================================
 
 function openAnswerReview() {
 
   const resultScreen =
-    document.getElementById("resultScreen");
-
-
-  resultScreen
-    .classList
-    .add("review-mode");
+    document.getElementById(
+      "resultScreen"
+    );
 
 
   document
     .querySelector(".result-intro")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
     .getElementById("resultNames")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
     .getElementById("percentage")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
     .querySelector(".similar-label")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
     .getElementById("resultDescription")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
     .querySelector(".divider")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
-    .querySelector("h3")
-    .classList
-    .add("hidden");
-
+    .querySelector("#resultScreen h3")
+    .classList.add("hidden");
 
   document
     .getElementById("categoryResults")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
     .querySelector(".science-note")
-    .classList
-    .add("hidden");
-
+    .classList.add("hidden");
 
   document
     .getElementById("viewAnswersButton")
-    .classList
-    .add("hidden");
+    .classList.add("hidden");
 
 
   reviewQuestion = 0;
@@ -582,9 +488,7 @@ function openAnswerReview() {
 }
 
 
-// ================================
 // CREATE REVIEW SCREEN
-// ================================
 
 function createReviewScreen() {
 
@@ -595,7 +499,9 @@ function createReviewScreen() {
 
 
   if (oldReview) {
+
     oldReview.remove();
+
   }
 
 
@@ -702,22 +608,13 @@ function createReviewScreen() {
   `;
 
 
-  const scienceNote =
-    document.querySelector(
-      ".science-note"
-    );
-
-
-  resultScreen.insertBefore(
-    review,
-    scienceNote
-  );
+  document
+    .getElementById("resultScreen")
+    .appendChild(review);
 }
 
 
-// ================================
 // SHOW REVIEW QUESTION
-// ================================
 
 function showReviewQuestion() {
 
@@ -727,7 +624,6 @@ function showReviewQuestion() {
 
   const answerA =
     answers[0][reviewQuestion];
-
 
   const answerB =
     answers[1][reviewQuestion];
@@ -812,9 +708,7 @@ function showReviewQuestion() {
 }
 
 
-// ================================
-// CREATE HIGHLIGHTED ANSWERS
-// ================================
+// CREATE REVIEW ANSWERS
 
 function createReviewAnswers(
   containerId,
@@ -831,11 +725,17 @@ function createReviewAnswers(
 
 
   const labels = [
+
     "Not me",
+
     "Mostly not me",
+
     "Sometimes",
+
     "Mostly me",
+
     "Definitely me"
+
   ];
 
 
@@ -879,9 +779,7 @@ function createReviewAnswers(
 }
 
 
-// ================================
 // NEXT REVIEW QUESTION
-// ================================
 
 function nextReviewQuestion() {
 
@@ -904,9 +802,7 @@ function nextReviewQuestion() {
 }
 
 
-// ================================
 // PREVIOUS REVIEW QUESTION
-// ================================
 
 function previousReviewQuestion() {
 
@@ -920,9 +816,7 @@ function previousReviewQuestion() {
 }
 
 
-// ================================
-// CLOSE ANSWER REVIEW
-// ================================
+// CLOSE REVIEW
 
 function closeAnswerReview() {
 
@@ -933,89 +827,57 @@ function closeAnswerReview() {
 
 
   if (review) {
+
     review.remove();
+
   }
-
-
-  const resultScreen =
-    document.getElementById(
-      "resultScreen"
-    );
-
-
-  resultScreen
-    .classList
-    .remove("review-mode");
 
 
   document
     .querySelector(".result-intro")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
     .getElementById("resultNames")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
     .getElementById("percentage")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
     .querySelector(".similar-label")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
     .getElementById("resultDescription")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
     .querySelector(".divider")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
-    .querySelector("h3")
-    .classList
-    .remove("hidden");
-
+    .querySelector("#resultScreen h3")
+    .classList.remove("hidden");
 
   document
     .getElementById("categoryResults")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
     .querySelector(".science-note")
-    .classList
-    .remove("hidden");
-
+    .classList.remove("hidden");
 
   document
     .getElementById("viewAnswersButton")
-    .classList
-    .remove("hidden");
+    .classList.remove("hidden");
 }
 
 
-// ================================
 // ANIMATE PERCENTAGE
-// ================================
 
-function animatePercentage(
-  finalNumber
-) {
+function animatePercentage(finalNumber) {
 
   const element =
     document.getElementById(
@@ -1037,9 +899,7 @@ function animatePercentage(
         current =
           finalNumber;
 
-        clearInterval(
-          interval
-        );
+        clearInterval(interval);
 
       }
 
@@ -1049,3 +909,60 @@ function animatePercentage(
 
     }, 20);
 }
+
+
+// KEYBOARD ANSWERS
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    const quizScreen =
+      document.getElementById(
+        "quizScreen"
+      );
+
+
+    if (
+      !quizScreen ||
+      quizScreen.classList.contains("hidden")
+    ) {
+
+      return;
+
+    }
+
+
+    const value =
+      Number(event.key);
+
+
+    if (
+      value >= 1 &&
+      value <= 5
+    ) {
+
+      const buttons =
+        document.querySelectorAll(
+          ".answers button"
+        );
+
+
+      const button =
+        buttons[value - 1];
+
+
+      if (button) {
+
+        chooseAnswer(
+          value,
+          button
+        );
+
+      }
+
+    }
+
+  }
+);
+```
