@@ -8,6 +8,7 @@ const questions = [
   ["I usually plan things ahead of time.", "Organisation"],
   ["I get stressed when things don't go according to plan.", "Organisation"],
   ["I consider myself an organised person.", "Organisation"],
+  ["I consider myself an organised person.", "Organisation"],
   ["I prefer spontaneous plans over plans made far in advance.", "Organisation"],
   ["I usually finish tasks before their deadline.", "Organisation"],
 
@@ -63,26 +64,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const backResultsButton = document.getElementById("backResultsButton");
 
 
-  startButton.addEventListener("click", startTest);
+  if (startButton) {
+    startButton.addEventListener("click", startTest);
+  }
 
-  nextButton.addEventListener("click", nextQuestion);
+  if (nextButton) {
+    nextButton.addEventListener("click", nextQuestion);
+  }
 
-  viewAnswersButton.addEventListener("click", openAnswerReview);
+  if (viewAnswersButton) {
+    viewAnswersButton.addEventListener("click", openAnswerReview);
+  }
 
-  previousReview.addEventListener("click", previousReviewQuestion);
+  if (previousReview) {
+    previousReview.addEventListener("click", previousReviewQuestion);
+  }
 
-  nextReview.addEventListener("click", nextReviewQuestion);
+  if (nextReview) {
+    nextReview.addEventListener("click", nextReviewQuestion);
+  }
 
-  backResultsButton.addEventListener("click", closeAnswerReview);
+  if (backResultsButton) {
+    backResultsButton.addEventListener("click", closeAnswerReview);
+  }
 
 
   document.querySelectorAll(".answers button").forEach(function (button) {
 
     button.addEventListener("click", function () {
 
-      const value = Number(
-        button.dataset.answer
-      );
+      const value = Number(button.dataset.answer);
 
       chooseAnswer(value, button);
 
@@ -93,26 +104,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.addEventListener("keydown", function (event) {
 
-    const quizScreen =
-      document.getElementById("quizScreen");
+    const quizScreen = document.getElementById("quizScreen");
 
-    if (
-      quizScreen.classList.contains("hidden")
-    ) {
+    if (!quizScreen || quizScreen.classList.contains("hidden")) {
       return;
     }
 
 
-    if (
-      event.target.tagName === "INPUT"
-    ) {
+    if (event.target.tagName === "INPUT") {
       return;
     }
 
 
     if (event.key === "Enter") {
 
-      if (!nextButton.disabled) {
+      const nextButton = document.getElementById("nextButton");
+
+      if (nextButton && !nextButton.disabled) {
         nextQuestion();
       }
 
@@ -121,16 +129,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    if (
-      ["1", "2", "3", "4", "5"].includes(event.key)
-    ) {
+    if (["1", "2", "3", "4", "5"].includes(event.key)) {
 
       const value = Number(event.key);
 
-      const button =
-        document.querySelector(
-          `.answers button[data-answer="${value}"]`
-        );
+      const button = document.querySelector(
+        `.answers button[data-answer="${value}"]`
+      );
 
       if (button) {
         chooseAnswer(value, button);
@@ -143,22 +148,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-/* START */
-
 function startTest() {
 
-  const nameA =
-    document.getElementById("nameA").value.trim();
-
-  const nameB =
-    document.getElementById("nameB").value.trim();
+  const nameA = document.getElementById("nameA").value.trim();
+  const nameB = document.getElementById("nameB").value.trim();
 
 
   if (!nameA || !nameB) {
 
-    alert(
-      "Please enter both names first!"
-    );
+    alert("Please enter both names first!");
 
     return;
   }
@@ -173,25 +171,18 @@ function startTest() {
   currentQuestion = 0;
 
 
-  document
-    .getElementById("startScreen")
-    .classList.add("hidden");
+  document.getElementById("startScreen").classList.add("hidden");
 
-  document
-    .getElementById("quizScreen")
-    .classList.remove("hidden");
+  document.getElementById("quizScreen").classList.remove("hidden");
 
 
   showQuestion();
 }
 
 
-/* SHOW QUESTION */
-
 function showQuestion() {
 
-  const current =
-    questions[currentQuestion];
+  const current = questions[currentQuestion];
 
 
   document.getElementById("personLabel").textContent =
@@ -215,9 +206,7 @@ function showQuestion() {
 
 
   document.querySelectorAll(".answers button").forEach(function (button) {
-
     button.classList.remove("selected");
-
   });
 
 
@@ -225,36 +214,26 @@ function showQuestion() {
 }
 
 
-/* CHOOSE ANSWER */
-
 function chooseAnswer(value, button) {
 
-  answers[currentPerson][currentQuestion] =
-    value;
+  answers[currentPerson][currentQuestion] = value;
 
 
   document.querySelectorAll(".answers button").forEach(function (btn) {
-
     btn.classList.remove("selected");
-
   });
 
 
   button.classList.add("selected");
 
 
-  document.getElementById("nextButton").disabled =
-    false;
+  document.getElementById("nextButton").disabled = false;
 }
 
 
-/* NEXT */
-
 function nextQuestion() {
 
-  if (
-    answers[currentPerson][currentQuestion] === undefined
-  ) {
+  if (answers[currentPerson][currentQuestion] === undefined) {
     return;
   }
 
@@ -262,9 +241,7 @@ function nextQuestion() {
   currentQuestion++;
 
 
-  if (
-    currentQuestion < questions.length
-  ) {
+  if (currentQuestion < questions.length) {
 
     showQuestion();
 
@@ -279,8 +256,7 @@ function nextQuestion() {
 
 
     alert(
-      "Friend 1 is finished!\n\n" +
-      "Pass the device to " +
+      "Friend 1 is finished!\n\nPass the device to " +
       names[1] +
       " now."
     );
@@ -296,8 +272,6 @@ function nextQuestion() {
 }
 
 
-/* RESULTS */
-
 function calculateResults() {
 
   let totalDifference = 0;
@@ -305,26 +279,18 @@ function calculateResults() {
 
   questions.forEach(function (_, index) {
 
-    const answerA =
-      answers[0][index];
-
-    const answerB =
-      answers[1][index];
-
-
-    totalDifference +=
-      Math.abs(answerA - answerB);
+    totalDifference += Math.abs(
+      answers[0][index] - answers[1][index]
+    );
 
   });
 
 
-  const maximumDifference =
-    questions.length * 4;
+  const maximumDifference = questions.length * 4;
 
 
   const percentage = Math.round(
-    100 -
-    (totalDifference / maximumDifference) * 100
+    100 - (totalDifference / maximumDifference) * 100
   );
 
 
@@ -336,14 +302,9 @@ function calculateResults() {
 
 function showResults(percentage) {
 
-  document
-    .getElementById("quizScreen")
-    .classList.add("hidden");
+  document.getElementById("quizScreen").classList.add("hidden");
 
-
-  document
-    .getElementById("resultScreen")
-    .classList.remove("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
 
 
   document.getElementById("resultNames").textContent =
@@ -388,13 +349,9 @@ function getDescription(score) {
 }
 
 
-/* CATEGORY RESULTS */
-
 function createCategoryResults() {
 
-  const container =
-    document.getElementById("categoryResults");
-
+  const container = document.getElementById("categoryResults");
 
   container.innerHTML = "";
 
@@ -417,11 +374,9 @@ function createCategoryResults() {
     }
 
 
-    categories[category].difference +=
-      Math.abs(
-        answers[0][index] -
-        answers[1][index]
-      );
+    categories[category].difference += Math.abs(
+      answers[0][index] - answers[1][index]
+    );
 
 
     categories[category].count++;
@@ -433,23 +388,17 @@ function createCategoryResults() {
 
     const data = categories[category];
 
-
-    const maxDifference =
-      data.count * 4;
+    const maxDifference = data.count * 4;
 
 
     const score = Math.round(
-      100 -
-      (data.difference / maxDifference) * 100
+      100 - (data.difference / maxDifference) * 100
     );
 
 
-    const div =
-      document.createElement("div");
+    const div = document.createElement("div");
 
-
-    div.className =
-      "category-result";
+    div.className = "category-result";
 
 
     div.innerHTML = `
@@ -470,18 +419,11 @@ function createCategoryResults() {
 }
 
 
-/* REVIEW */
-
 function openAnswerReview() {
 
-  document
-    .getElementById("resultScreen")
-    .classList.add("hidden");
+  document.getElementById("resultScreen").classList.add("hidden");
 
-
-  document
-    .getElementById("reviewScreen")
-    .classList.remove("hidden");
+  document.getElementById("reviewScreen").classList.remove("hidden");
 
 
   reviewQuestion = 0;
@@ -492,24 +434,18 @@ function openAnswerReview() {
 
 function showReviewQuestion() {
 
-  const current =
-    questions[reviewQuestion];
+  const current = questions[reviewQuestion];
+
+  const answerA = answers[0][reviewQuestion];
+
+  const answerB = answers[1][reviewQuestion];
 
 
-  const answerA =
-    answers[0][reviewQuestion];
+  const difference = Math.abs(answerA - answerB);
 
-
-  const answerB =
-    answers[1][reviewQuestion];
-
-
-  const difference =
-    Math.abs(answerA - answerB);
-
-
-  const similarity =
-    Math.round(100 - (difference / 4) * 100);
+  const similarity = Math.round(
+    100 - (difference / 4) * 100
+  );
 
 
   document.getElementById("reviewCount").textContent =
@@ -536,16 +472,9 @@ function showReviewQuestion() {
     names[1];
 
 
-  createReviewAnswers(
-    "reviewAnswersA",
-    answerA
-  );
+  createReviewAnswers("reviewAnswersA", answerA);
 
-
-  createReviewAnswers(
-    "reviewAnswersB",
-    answerB
-  );
+  createReviewAnswers("reviewAnswersB", answerB);
 
 
   document.getElementById("reviewSimilarity").textContent =
@@ -563,14 +492,9 @@ function showReviewQuestion() {
 }
 
 
-function createReviewAnswers(
-  containerId,
-  selectedAnswer
-) {
+function createReviewAnswers(containerId, selectedAnswer) {
 
-  const container =
-    document.getElementById(containerId);
-
+  const container = document.getElementById(containerId);
 
   container.innerHTML = "";
 
@@ -579,21 +503,13 @@ function createReviewAnswers(
 
     const value = index + 1;
 
+    const option = document.createElement("div");
 
-    const option =
-      document.createElement("div");
-
-
-    option.className =
-      "review-answer";
+    option.className = "review-answer";
 
 
     if (value === selectedAnswer) {
-
-      option.classList.add(
-        "selected"
-      );
-
+      option.classList.add("selected");
     }
 
 
@@ -615,8 +531,6 @@ function createReviewAnswers(
 }
 
 
-/* REVIEW NAVIGATION */
-
 function previousReviewQuestion() {
 
   if (reviewQuestion > 0) {
@@ -632,10 +546,7 @@ function previousReviewQuestion() {
 
 function nextReviewQuestion() {
 
-  if (
-    reviewQuestion <
-    questions.length - 1
-  ) {
+  if (reviewQuestion < questions.length - 1) {
 
     reviewQuestion++;
 
@@ -652,14 +563,8 @@ function nextReviewQuestion() {
 
 function closeAnswerReview() {
 
-  document
-    .getElementById("reviewScreen")
-    .classList.add("hidden");
+  document.getElementById("reviewScreen").classList.add("hidden");
 
-
-  document
-    .getElementById("resultScreen")
-    .classList.remove("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
 
 }
-```
