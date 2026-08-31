@@ -1,4 +1,3 @@
-```javascript
 const questions = [
   ["I prefer having a few close friends rather than lots of friends.", "Social"],
   ["I enjoy being the centre of attention.", "Social"],
