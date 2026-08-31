@@ -3,137 +3,81 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Do Opposites Really Attract?</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
+  <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-  <div class="background-shape shape-one"></div>
-  <div class="background-shape shape-two"></div>
-
-
   <main class="app">
 
+    <!-- START SCREEN -->
 
-    <!-- ==================================
-         START SCREEN
-         ================================== -->
+    <section id="startScreen" class="screen">
 
-    <section
-      id="startScreen"
-      class="screen"
-    >
+      <div class="icon">🧪</div>
 
-      <div class="icon">
-        🧪
-      </div>
-
-
-      <p class="eyebrow">
-        PERSONALITY EXPERIMENT
-      </p>
-
+      <p class="eyebrow">PERSONALITY EXPERIMENT</p>
 
       <h1>
         Do Opposites<br>
         <span>Really Attract?</span>
       </h1>
 
-
       <p class="intro">
-        Find out just how similar you and your
-        friend really are.
+        Find out just how similar you and your friend really are.
       </p>
-
 
       <div class="experiment-box">
 
-        <div class="experiment-icon">
-          🔬
-        </div>
+        <div class="experiment-icon">🔬</div>
 
         <div>
-
-          <strong>
-            The experiment
-          </strong>
+          <strong>The experiment</strong>
 
           <p>
-            Answer 30 personality questions
-            independently, then compare your
-            results to discover your friendship
-            similarity.
+            Answer 30 personality questions independently,
+            then compare your results to discover your
+            friendship similarity.
           </p>
-
         </div>
 
       </div>
-
 
       <div class="names">
 
         <div class="name-field">
-
-          <label for="nameA">
-            FRIEND 1
-          </label>
+          <label for="nameA">FRIEND 1</label>
 
           <input
-            type="text"
             id="nameA"
+            type="text"
             placeholder="Enter name"
             autocomplete="off"
           >
-
         </div>
 
-
         <div class="name-field">
-
-          <label for="nameB">
-            FRIEND 2
-          </label>
+          <label for="nameB">FRIEND 2</label>
 
           <input
-            type="text"
             id="nameB"
+            type="text"
             placeholder="Enter name"
             autocomplete="off"
           >
-
         </div>
 
       </div>
 
-
-      <button
-        class="primary-button"
-        onclick="startTest()"
-      >
-
+      <button id="startButton" class="primary-button" type="button">
         Start Experiment
-
-        <span>
-          →
-        </span>
-
+        <span>→</span>
       </button>
-
 
       <p class="keyboard-hint">
         30 questions · 5 answer choices
@@ -142,36 +86,21 @@
     </section>
 
 
+    <!-- QUIZ SCREEN -->
 
-    <!-- ==================================
-         QUIZ SCREEN
-         ================================== -->
-
-    <section
-      id="quizScreen"
-      class="screen hidden"
-    >
+    <section id="quizScreen" class="screen hidden">
 
       <div class="quiz-header">
 
         <div>
-
-          <p
-            class="eyebrow"
-            id="personLabel"
-          >
+          <p class="eyebrow" id="personLabel">
             Friend's answers
           </p>
 
-          <span
-            class="question-count"
-            id="questionCount"
-          >
+          <span id="questionCount" class="question-count">
             1 / 30
           </span>
-
         </div>
-
 
         <div class="keyboard-badge">
           1–5 to answer
@@ -179,132 +108,58 @@
 
       </div>
 
-
       <div class="progress-track">
-
-        <div
-          id="progressBar"
-          class="progress-fill"
-        ></div>
-
+        <div id="progressBar" class="progress-fill"></div>
       </div>
-
 
       <div class="question-card">
 
-        <div
-          id="categoryLabel"
-          class="category"
-        >
+        <div id="categoryLabel" class="category">
           Social
         </div>
-
 
         <h2 id="questionText">
           Question
         </h2>
 
-
         <div class="answers">
 
-          <button
-            type="button"
-            onclick="chooseAnswer(1, this)"
-          >
-
-            <span class="answer-number">
-              1
-            </span>
-
-            <span>
-              Not me
-            </span>
-
+          <button type="button" data-answer="1">
+            <span class="answer-number">1</span>
+            <span>Not me</span>
           </button>
 
-
-          <button
-            type="button"
-            onclick="chooseAnswer(2, this)"
-          >
-
-            <span class="answer-number">
-              2
-            </span>
-
-            <span>
-              Mostly not me
-            </span>
-
+          <button type="button" data-answer="2">
+            <span class="answer-number">2</span>
+            <span>Mostly not me</span>
           </button>
 
-
-          <button
-            type="button"
-            onclick="chooseAnswer(3, this)"
-          >
-
-            <span class="answer-number">
-              3
-            </span>
-
-            <span>
-              Sometimes
-            </span>
-
+          <button type="button" data-answer="3">
+            <span class="answer-number">3</span>
+            <span>Sometimes</span>
           </button>
 
-
-          <button
-            type="button"
-            onclick="chooseAnswer(4, this)"
-          >
-
-            <span class="answer-number">
-              4
-            </span>
-
-            <span>
-              Mostly me
-            </span>
-
+          <button type="button" data-answer="4">
+            <span class="answer-number">4</span>
+            <span>Mostly me</span>
           </button>
 
-
-          <button
-            type="button"
-            onclick="chooseAnswer(5, this)"
-          >
-
-            <span class="answer-number">
-              5
-            </span>
-
-            <span>
-              Definitely me
-            </span>
-
+          <button type="button" data-answer="5">
+            <span class="answer-number">5</span>
+            <span>Definitely me</span>
           </button>
 
         </div>
-
 
         <button
           id="nextButton"
           class="next-button"
           type="button"
-          onclick="nextQuestion()"
           disabled
         >
-
           Next
-
-          <span>
-            →
-          </span>
-
+          <span>→</span>
         </button>
-
 
         <p class="quiz-hint">
           Press <strong>Enter</strong> to continue
@@ -315,100 +170,157 @@
     </section>
 
 
+    <!-- RESULT SCREEN -->
 
-    <!-- ==================================
-         RESULT SCREEN
-         ================================== -->
-
-    <section
-      id="resultScreen"
-      class="screen hidden"
-    >
+    <section id="resultScreen" class="screen hidden">
 
       <div class="result-intro">
         EXPERIMENT COMPLETE
       </div>
 
-
       <div class="result-icon">
         ✨
       </div>
-
 
       <p class="eyebrow">
         YOUR RESULT
       </p>
 
-
       <h1 id="resultNames">
         Friend 1 + Friend 2
       </h1>
-
 
       <p class="similar-label">
         SIMILARITY
       </p>
 
-
-      <div
-        id="percentage"
-        class="percentage"
-      >
+      <div id="percentage" class="percentage">
         0%
       </div>
 
-
-      <p
-        id="resultDescription"
-        class="result-description"
-      >
+      <p id="resultDescription" class="result-description">
         Your results are ready.
       </p>
 
-
       <div class="divider"></div>
-
 
       <h3>
         Personality breakdown
       </h3>
 
-
-      <div
-        id="categoryResults"
-        class="category-results"
-      ></div>
-
+      <div id="categoryResults" class="category-results"></div>
 
       <button
         id="viewAnswersButton"
         class="primary-button"
-        onclick="openAnswerReview()"
+        type="button"
       >
-
         See Our Answers
-
-        <span>
-          →
-        </span>
-
+        <span>→</span>
       </button>
 
-
       <p class="science-note">
-        Your percentage represents how closely
-        your answers matched across the experiment.
+        Your percentage represents how closely your
+        answers matched across the experiment.
       </p>
 
     </section>
 
 
-  </main>
+    <!-- ANSWER REVIEW -->
 
+    <section id="reviewScreen" class="screen hidden">
+
+      <button
+        id="backResultsButton"
+        class="back-button"
+        type="button"
+      >
+        ← Back to results
+      </button>
+
+      <p class="eyebrow">
+        ANSWER REVIEW
+      </p>
+
+      <div class="quiz-header">
+
+        <div>
+          <span id="reviewCount" class="question-count">
+            1 / 30
+          </span>
+        </div>
+
+      </div>
+
+      <div class="progress-track">
+        <div id="reviewProgressBar" class="progress-fill"></div>
+      </div>
+
+      <div class="question-card">
+
+        <div id="reviewCategory" class="category">
+          Social
+        </div>
+
+        <h2 id="reviewQuestionText">
+          Question
+        </h2>
+
+
+        <div class="review-person">
+
+          <h3 id="reviewNameA">
+            Friend 1
+          </h3>
+
+          <div id="reviewAnswersA" class="review-answers"></div>
+
+        </div>
+
+
+        <div class="review-person">
+
+          <h3 id="reviewNameB">
+            Friend 2
+          </h3>
+
+          <div id="reviewAnswersB" class="review-answers"></div>
+
+        </div>
+
+
+        <div id="reviewSimilarity" class="review-similarity">
+          100% match
+        </div>
+
+
+        <div class="review-navigation">
+
+          <button
+            id="previousReview"
+            type="button"
+          >
+            ← Previous
+          </button>
+
+          <button
+            id="nextReview"
+            type="button"
+          >
+            Next →
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
 
   <script src="script.js"></script>
 
 </body>
-
 </html>
 ```
