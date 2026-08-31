@@ -29,9 +29,8 @@ body {
   display: none !important;
 }
 
-/* ================================
-   START SCREEN
-================================ */
+
+/* START SCREEN */
 
 .science-icon {
   width: 60px;
@@ -107,7 +106,6 @@ input {
   border-radius: 13px;
   font-size: 16px;
   outline: none;
-  transition: 0.2s;
 }
 
 input:focus {
@@ -132,7 +130,6 @@ input:focus {
 
 .main-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 23px rgba(91, 91, 234, 0.25);
 }
 
 .main-button:active {
@@ -147,9 +144,7 @@ input:focus {
 }
 
 
-/* ================================
-   QUIZ SCREEN
-================================ */
+/* QUIZ */
 
 .top-row {
   display: flex;
@@ -172,7 +167,8 @@ input:focus {
   margin: 15px 0 30px;
 }
 
-#progressBar {
+#progressBar,
+#reviewProgressBar {
   width: 5%;
   height: 100%;
   background: linear-gradient(90deg, #5b5bea, #8b83ff);
@@ -191,7 +187,8 @@ input:focus {
   letter-spacing: .8px;
 }
 
-#questionText {
+#questionText,
+#reviewQuestionText {
   font-size: 26px;
   line-height: 1.3;
   margin: 17px 0 12px;
@@ -225,7 +222,6 @@ input:focus {
 
 .answers button:hover {
   border-color: #5b5bea;
-  transform: translateY(-1px);
 }
 
 .answers button.selected {
@@ -245,7 +241,6 @@ input:focus {
   border-radius: 10px;
   background: #f0f0fa;
   color: #5b5bea;
-  font-size: 16px;
 }
 
 .answers button.selected strong {
@@ -258,10 +253,26 @@ input:focus {
   font-weight: 600;
 }
 
+.next-button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  background: #5b5bea;
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
 
-/* ================================
-   RESULTS
-================================ */
+.next-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+
+/* RESULTS */
 
 .result-intro {
   text-align: center;
@@ -350,9 +361,7 @@ h3 {
 }
 
 
-/* ================================
-   ANSWER REVIEW
-================================ */
+/* ANSWER REVIEW */
 
 .review-top {
   display: flex;
@@ -375,13 +384,6 @@ h3 {
   color: #686d82;
   font-size: 13px;
   font-weight: 700;
-}
-
-#reviewProgressBar {
-  width: 3.33%;
-  height: 100%;
-  background: linear-gradient(90deg, #5b5bea, #8b83ff);
-  transition: width 0.25s ease;
 }
 
 .review-person {
@@ -422,15 +424,12 @@ h3 {
   border-radius: 10px;
   background: #f0f0fa;
   color: #5b5bea;
-  font-size: 16px;
 }
 
 .review-answer-button span {
   font-size: 14px;
   font-weight: 600;
 }
-
-/* The answer they chose */
 
 .review-answer-button.review-selected {
   background: #5b5bea;
@@ -471,11 +470,6 @@ h3 {
   font-size: 14px;
   font-weight: 800;
   cursor: pointer;
-  transition: 0.18s;
-}
-
-.review-navigation button:hover {
-  border-color: #5b5bea;
 }
 
 .review-navigation button:last-child {
@@ -490,9 +484,7 @@ h3 {
 }
 
 
-/* ================================
-   MOBILE
-================================ */
+/* MOBILE */
 
 @media (max-width: 420px) {
 
@@ -509,7 +501,8 @@ h3 {
     font-size: 34px;
   }
 
-  #questionText {
+  #questionText,
+  #reviewQuestionText {
     font-size: 23px;
   }
 
