@@ -1,4 +1,10 @@
 ```javascript
+// ========================================
+// DO OPPOSITES REALLY ATTRACT?
+// COMPLETE SCRIPT
+// ========================================
+
+
 const questions = [
 
   // SOCIAL
@@ -47,15 +53,22 @@ const questions = [
 
 
 let names = ["", ""];
-let answers = [[], []];
+
+let answers = [
+  [],
+  []
+];
 
 let person = 0;
+
 let question = 0;
 
 let reviewQuestion = 0;
 
 
-// START TEST
+// ========================================
+// START EXPERIMENT
+// ========================================
 
 function startTest() {
 
@@ -71,32 +84,46 @@ function startTest() {
     alert("Please enter both names first!");
 
     return;
+
   }
 
 
-  names = [nameA, nameB];
+  names[0] = nameA;
 
-  answers = [[], []];
+  names[1] = nameB;
+
+
+  answers = [
+    [],
+    []
+  ];
+
 
   person = 0;
+
   question = 0;
 
 
   document
     .getElementById("startScreen")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
 
 
   document
     .getElementById("quizScreen")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
 
 
   showQuestion();
+
 }
 
 
+// ========================================
 // SHOW QUESTION
+// ========================================
 
 function showQuestion() {
 
@@ -134,52 +161,81 @@ function showQuestion() {
     current[0];
 
 
-  document
-    .querySelectorAll(".answers button")
-    .forEach(button => {
+  const buttons =
+    document.querySelectorAll(
+      ".answers button"
+    );
 
-      button.classList.remove("selected");
 
-    });
+  buttons.forEach(
+    button => {
+
+      button.classList.remove(
+        "selected"
+      );
+
+    }
+  );
 
 
   document
     .getElementById("nextButton")
     .disabled = true;
+
 }
 
 
+// ========================================
 // CHOOSE ANSWER
+// ========================================
 
-function chooseAnswer(value, button) {
+function chooseAnswer(
+  value,
+  button
+) {
 
-  answers[person][question] = value;
-
-
-  document
-    .querySelectorAll(".answers button")
-    .forEach(btn => {
-
-      btn.classList.remove("selected");
-
-    });
+  answers[person][question] =
+    value;
 
 
-  button.classList.add("selected");
+  const buttons =
+    document.querySelectorAll(
+      ".answers button"
+    );
+
+
+  buttons.forEach(
+    btn => {
+
+      btn.classList.remove(
+        "selected"
+      );
+
+    }
+  );
+
+
+  button.classList.add(
+    "selected"
+  );
 
 
   document
     .getElementById("nextButton")
     .disabled = false;
+
 }
 
 
+// ========================================
 // NEXT QUESTION
+// ========================================
 
 function nextQuestion() {
 
   if (
-    answers[person][question] === undefined
+    answers[person][question] ===
+    undefined
   ) {
 
     return;
@@ -190,101 +246,143 @@ function nextQuestion() {
   question++;
 
 
-  if (question >= questions.length) {
+  // Friend 1 has finished
+  if (
+    question >=
+    questions.length
+  ) {
 
     if (person === 0) {
 
       person = 1;
+
       question = 0;
 
 
       alert(
         "Friend 1 is finished!\n\n" +
-        "Pass the phone to " +
+        "Pass the device to " +
         names[1] +
-        ". Don't peek at the previous answers 👀"
+        ". Don't peek at the answers!"
       );
 
 
       showQuestion();
 
-    }
-
-    else {
-
-      calculateResult();
+      return;
 
     }
 
+
+    // Both friends have finished
+    calculateResult();
+
+    return;
+
   }
 
-  else {
 
-    showQuestion();
+  showQuestion();
 
-  }
 }
 
 
-// SIMILARITY
+// ========================================
+// SIMILARITY SCORE
+// ========================================
 
-function getSimilarity(difference) {
+function getSimilarity(
+  difference
+) {
 
-  if (difference === 0) return 100;
+  if (difference === 0) {
+    return 100;
+  }
 
-  if (difference === 1) return 60;
+  if (difference === 1) {
+    return 60;
+  }
 
-  if (difference === 2) return 30;
+  if (difference === 2) {
+    return 30;
+  }
 
-  if (difference === 3) return 10;
+  if (difference === 3) {
+    return 10;
+  }
 
   return 0;
+
 }
 
 
+// ========================================
 // CALCULATE RESULT
+// ========================================
 
 function calculateResult() {
 
   let totalSimilarity = 0;
 
+
   const categoryScores = {};
+
   const categoryMaximums = {};
 
 
-  questions.forEach((item, i) => {
+  questions.forEach(
+    (item, i) => {
 
-    const category = item[1];
-
-    const answerA = answers[0][i];
-
-    const answerB = answers[1][i];
+      const category =
+        item[1];
 
 
-    const difference =
-      Math.abs(answerA - answerB);
+      const answerA =
+        answers[0][i];
 
 
-    const similarity =
-      getSimilarity(difference);
+      const answerB =
+        answers[1][i];
 
 
-    totalSimilarity += similarity;
+      const difference =
+        Math.abs(
+          answerA - answerB
+        );
 
 
-    if (!categoryScores[category]) {
+      const similarity =
+        getSimilarity(
+          difference
+        );
 
-      categoryScores[category] = 0;
-      categoryMaximums[category] = 0;
+
+      totalSimilarity +=
+        similarity;
+
+
+      if (
+        !categoryScores[category]
+      ) {
+
+        categoryScores[category] =
+          0;
+
+        categoryMaximums[category] =
+          0;
+
+      }
+
+
+      categoryScores[category] +=
+        similarity;
+
+
+      categoryMaximums[category] +=
+        100;
 
     }
-
-
-    categoryScores[category] += similarity;
-
-    categoryMaximums[category] += 100;
-
-  });
+  );
 
 
   const percentage =
@@ -299,10 +397,13 @@ function calculateResult() {
     categoryScores,
     categoryMaximums
   );
+
 }
 
 
+// ========================================
 // SHOW RESULT
+// ========================================
 
 function showResult(
   percentage,
@@ -312,7 +413,8 @@ function showResult(
 
   document
     .getElementById("quizScreen")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
 
 
   document
@@ -324,13 +426,7 @@ function showResult(
   document
     .getElementById("resultNames")
     .textContent =
-    names[0] + " + " + names[1];
-
-
-  document
-    .getElementById("percentage")
-    .textContent =
-    "0%";
+    `${names[0]} + ${names[1]}`;
 
 
   let description;
@@ -367,7 +463,7 @@ function showResult(
   else {
 
     description =
-      "Your answers were very different! According to this questionnaire, you two are bringing very different personalities to the friendship.";
+      "Your answers were very different! You two bring very different personalities to the friendship.";
 
   }
 
@@ -388,95 +484,172 @@ function showResult(
 
 
   Object.keys(categoryScores)
-    .forEach(category => {
+    .forEach(
+      category => {
 
-      const score =
-        Math.round(
-          categoryScores[category] /
-          categoryMaximums[category] *
-          100
+        const score =
+          Math.round(
+            categoryScores[category] /
+            categoryMaximums[category] *
+            100
+          );
+
+
+        const box =
+          document.createElement(
+            "div"
+          );
+
+
+        box.className =
+          "category-result";
+
+
+        box.innerHTML = `
+
+          <div class="category-result-name">
+            ${category}
+          </div>
+
+          <div class="category-result-score">
+            ${score}%
+          </div>
+
+        `;
+
+
+        results.appendChild(
+          box
         );
 
-
-      const box =
-        document.createElement("div");
-
-
-      box.className =
-        "category-result";
-
-
-      box.innerHTML = `
-
-        <div class="category-result-name">
-          ${category}
-        </div>
-
-        <div class="category-result-score">
-          ${score}%
-        </div>
-
-      `;
-
-
-      results.appendChild(box);
-
-    });
-
-
-  animatePercentage(percentage);
-}
-
-
-// OPEN ANSWER REVIEW
-
-function openAnswerReview() {
-
-  const resultScreen =
-    document.getElementById(
-      "resultScreen"
+      }
     );
 
 
+  animatePercentage(
+    percentage
+  );
+
+}
+
+
+// ========================================
+// ANIMATE PERCENTAGE
+// ========================================
+
+function animatePercentage(
+  finalNumber
+) {
+
+  const element =
+    document.getElementById(
+      "percentage"
+    );
+
+
+  let current = 0;
+
+
+  element.textContent =
+    "0%";
+
+
+  const interval =
+    setInterval(
+      () => {
+
+        current += 2;
+
+
+        if (
+          current >=
+          finalNumber
+        ) {
+
+          current =
+            finalNumber;
+
+          clearInterval(
+            interval
+          );
+
+        }
+
+
+        element.textContent =
+          current + "%";
+
+      },
+      20
+    );
+
+}
+
+
+// ========================================
+// VIEW ANSWERS
+// ========================================
+
+function openAnswerReview() {
+
   document
     .querySelector(".result-intro")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .getElementById("resultNames")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .getElementById("percentage")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .querySelector(".similar-label")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .getElementById("resultDescription")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .querySelector(".divider")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .querySelector("#resultScreen h3")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .getElementById("categoryResults")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .querySelector(".science-note")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
+
 
   document
     .getElementById("viewAnswersButton")
-    .classList.add("hidden");
+    .classList
+    .add("hidden");
 
 
   reviewQuestion = 0;
@@ -485,10 +658,13 @@ function openAnswerReview() {
   createReviewScreen();
 
   showReviewQuestion();
+
 }
 
 
+// ========================================
 // CREATE REVIEW SCREEN
+// ========================================
 
 function createReviewScreen() {
 
@@ -506,7 +682,9 @@ function createReviewScreen() {
 
 
   const review =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
 
   review.id =
@@ -551,7 +729,9 @@ function createReviewScreen() {
     <div class="review-person">
 
       <p class="review-person-name">
+
         <span id="reviewNameA"></span>'s answer
+
       </p>
 
 
@@ -566,7 +746,9 @@ function createReviewScreen() {
     <div class="review-person">
 
       <p class="review-person-name">
+
         <span id="reviewNameB"></span>'s answer
+
       </p>
 
 
@@ -611,10 +793,13 @@ function createReviewScreen() {
   document
     .getElementById("resultScreen")
     .appendChild(review);
+
 }
 
 
+// ========================================
 // SHOW REVIEW QUESTION
+// ========================================
 
 function showReviewQuestion() {
 
@@ -624,6 +809,7 @@ function showReviewQuestion() {
 
   const answerA =
     answers[0][reviewQuestion];
+
 
   const answerB =
     answers[1][reviewQuestion];
@@ -636,7 +822,9 @@ function showReviewQuestion() {
 
 
   const similarity =
-    getSimilarity(difference);
+    getSimilarity(
+      difference
+    );
 
 
   document
@@ -702,13 +890,17 @@ function showReviewQuestion() {
   document
     .getElementById("nextReview")
     .textContent =
-    reviewQuestion === questions.length - 1
+    reviewQuestion ===
+    questions.length - 1
       ? "Finish ✓"
       : "Next →";
+
 }
 
 
+// ========================================
 // CREATE REVIEW ANSWERS
+// ========================================
 
 function createReviewAnswers(
   containerId,
@@ -739,47 +931,57 @@ function createReviewAnswers(
   ];
 
 
-  labels.forEach((label, index) => {
+  labels.forEach(
+    (label, index) => {
 
-    const value =
-      index + 1;
-
-
-    const button =
-      document.createElement("div");
+      const value =
+        index + 1;
 
 
-    button.className =
-      "review-answer-button";
+      const button =
+        document.createElement(
+          "div"
+        );
 
 
-    if (value === selectedAnswer) {
+      button.className =
+        "review-answer-button";
 
-      button.classList.add(
-        "review-selected"
+
+      if (
+        value ===
+        selectedAnswer
+      ) {
+
+        button.classList.add(
+          "review-selected"
+        );
+
+      }
+
+
+      button.innerHTML = `
+
+        <strong>${value}</strong>
+
+        <span>${label}</span>
+
+      `;
+
+
+      container.appendChild(
+        button
       );
 
     }
+  );
 
-
-    button.innerHTML = `
-
-      <strong>${value}</strong>
-
-      <span>${label}</span>
-
-    `;
-
-
-    container.appendChild(
-      button
-    );
-
-  });
 }
 
 
+// ========================================
 // NEXT REVIEW QUESTION
+// ========================================
 
 function nextReviewQuestion() {
 
@@ -799,24 +1001,32 @@ function nextReviewQuestion() {
     closeAnswerReview();
 
   }
+
 }
 
 
+// ========================================
 // PREVIOUS REVIEW QUESTION
+// ========================================
 
 function previousReviewQuestion() {
 
-  if (reviewQuestion > 0) {
+  if (
+    reviewQuestion > 0
+  ) {
 
     reviewQuestion--;
 
     showReviewQuestion();
 
   }
+
 }
 
 
-// CLOSE REVIEW
+// ========================================
+// CLOSE ANSWER REVIEW
+// ========================================
 
 function closeAnswerReview() {
 
@@ -835,83 +1045,69 @@ function closeAnswerReview() {
 
   document
     .querySelector(".result-intro")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .getElementById("resultNames")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .getElementById("percentage")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .querySelector(".similar-label")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .getElementById("resultDescription")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .querySelector(".divider")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .querySelector("#resultScreen h3")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .getElementById("categoryResults")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .querySelector(".science-note")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 
   document
     .getElementById("viewAnswersButton")
-    .classList.remove("hidden");
+    .classList
+    .remove("hidden");
+
 }
 
 
-// ANIMATE PERCENTAGE
-
-function animatePercentage(finalNumber) {
-
-  const element =
-    document.getElementById(
-      "percentage"
-    );
-
-
-  let current = 0;
-
-
-  const interval =
-    setInterval(() => {
-
-      current += 2;
-
-
-      if (current >= finalNumber) {
-
-        current =
-          finalNumber;
-
-        clearInterval(interval);
-
-      }
-
-
-      element.textContent =
-        current + "%";
-
-    }, 20);
-}
-
-
+// ========================================
 // KEYBOARD ANSWERS
+// ========================================
 
 document.addEventListener(
   "keydown",
@@ -923,9 +1119,12 @@ document.addEventListener(
       );
 
 
+    // Only work during the quiz
     if (
       !quizScreen ||
-      quizScreen.classList.contains("hidden")
+      quizScreen.classList.contains(
+        "hidden"
+      )
     ) {
 
       return;
@@ -933,33 +1132,133 @@ document.addEventListener(
     }
 
 
-    const value =
-      Number(event.key);
+    let value = null;
+
+
+    // Number row
+    if (
+      event.key === "1" ||
+      event.code === "Digit1"
+    ) {
+
+      value = 1;
+
+    }
 
 
     if (
-      value >= 1 &&
-      value <= 5
+      event.key === "2" ||
+      event.code === "Digit2"
     ) {
 
-      const buttons =
-        document.querySelectorAll(
-          ".answers button"
-        );
+      value = 2;
+
+    }
 
 
-      const button =
-        buttons[value - 1];
+    if (
+      event.key === "3" ||
+      event.code === "Digit3"
+    ) {
+
+      value = 3;
+
+    }
 
 
-      if (button) {
+    if (
+      event.key === "4" ||
+      event.code === "Digit4"
+    ) {
 
-        chooseAnswer(
-          value,
-          button
-        );
+      value = 4;
 
-      }
+    }
+
+
+    if (
+      event.key === "5" ||
+      event.code === "Digit5"
+    ) {
+
+      value = 5;
+
+    }
+
+
+    // Number pad
+    if (
+      event.code === "Numpad1"
+    ) {
+
+      value = 1;
+
+    }
+
+
+    if (
+      event.code === "Numpad2"
+    ) {
+
+      value = 2;
+
+    }
+
+
+    if (
+      event.code === "Numpad3"
+    ) {
+
+      value = 3;
+
+    }
+
+
+    if (
+      event.code === "Numpad4"
+    ) {
+
+      value = 4;
+
+    }
+
+
+    if (
+      event.code === "Numpad5"
+    ) {
+
+      value = 5;
+
+    }
+
+
+    // Ignore every other key
+    if (
+      value === null
+    ) {
+
+      return;
+
+    }
+
+
+    const buttons =
+      document.querySelectorAll(
+        ".answers button"
+      );
+
+
+    if (
+      buttons.length >= value
+    ) {
+
+      chooseAnswer(
+        value,
+        buttons[value - 1]
+      );
+
+
+      event.preventDefault();
 
     }
 
