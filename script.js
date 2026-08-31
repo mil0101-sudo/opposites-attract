@@ -1,265 +1,133 @@
 ```javascript
-// ========================================
-// DO OPPOSITES REALLY ATTRACT?
-// COMPLETE JAVASCRIPT
-// ========================================
-
-
-// ========================================
-// QUESTIONS
-// ========================================
-
 const questions = [
-
-  // SOCIAL
   ["I prefer having a few close friends rather than lots of friends.", "Social"],
   ["I enjoy being the centre of attention.", "Social"],
   ["I find it easy to start conversations with strangers.", "Social"],
   ["I would rather spend a Friday night at home than go to a party.", "Social"],
   ["I usually feel more energetic after spending time with other people.", "Social"],
 
-  // ORGANISATION
   ["I usually plan things ahead of time.", "Organisation"],
   ["I get stressed when things don't go according to plan.", "Organisation"],
   ["I consider myself an organised person.", "Organisation"],
   ["I prefer spontaneous plans over plans made far in advance.", "Organisation"],
   ["I usually finish tasks before their deadline.", "Organisation"],
 
-  // DECISION-MAKING
   ["I make decisions based more on logic than emotion.", "Decision-making"],
   ["I often change my mind after hearing someone else's opinion.", "Decision-making"],
   ["I usually think about consequences before doing something.", "Decision-making"],
   ["I would rather trust my instincts than overthink a decision.", "Decision-making"],
   ["I find it easy to make decisions quickly.", "Decision-making"],
 
-  // RISK-TAKING
   ["I enjoy trying things that feel risky or unfamiliar.", "Risk-taking"],
   ["I would try something new even if I might be bad at it.", "Risk-taking"],
   ["I enjoy competing with other people.", "Risk-taking"],
   ["I would choose an exciting option over a safe option.", "Risk-taking"],
   ["I am usually willing to take a chance if the reward could be worth it.", "Risk-taking"],
 
-  // EMOTIONAL STYLE
   ["I find it easy to express how I am feeling.", "Emotional style"],
   ["I can usually tell when someone else is upset.", "Emotional style"],
   ["I forgive people easily after an argument.", "Emotional style"],
   ["It is difficult for me to hide when I am annoyed.", "Emotional style"],
   ["I tend to think about my feelings before reacting to a situation.", "Emotional style"],
 
-  // INDEPENDENCE
   ["I am comfortable doing things by myself.", "Independence"],
   ["I usually prefer solving problems on my own.", "Independence"],
   ["I am confident making choices without asking other people.", "Independence"],
   ["I often rely on my friends when I am unsure what to do.", "Independence"],
   ["I would rather work alone than in a group.", "Independence"]
-
 ];
 
-
-// ========================================
-// VARIABLES
-// ========================================
 
 let names = ["", ""];
-
-let answers = [
-  [],
-  []
-];
-
+let answers = [[], []];
 let person = 0;
-
 let question = 0;
-
 let reviewQuestion = 0;
 
 
-// ========================================
-// START EXPERIMENT
-// ========================================
-
 function startTest() {
 
-  const nameA =
-    document.getElementById("nameA").value.trim();
-
-  const nameB =
-    document.getElementById("nameB").value.trim();
-
+  const nameA = document.getElementById("nameA").value.trim();
+  const nameB = document.getElementById("nameB").value.trim();
 
   if (!nameA || !nameB) {
-
     alert("Please enter both names first!");
-
     return;
-
   }
-
 
   names[0] = nameA;
   names[1] = nameB;
 
-
-  answers = [
-    [],
-    []
-  ];
-
-
+  answers = [[], []];
   person = 0;
   question = 0;
 
-
-  document
-    .getElementById("startScreen")
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById("quizScreen")
-    .classList
-    .remove("hidden");
-
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("quizScreen").classList.remove("hidden");
 
   showQuestion();
-
 }
 
-
-// ========================================
-// SHOW QUESTION
-// ========================================
 
 function showQuestion() {
 
-  const current =
-    questions[question];
+  const current = questions[question];
 
-
-  document
-    .getElementById("personLabel")
-    .textContent =
+  document.getElementById("personLabel").textContent =
     names[person] + "'s answers";
 
-
-  document
-    .getElementById("questionCount")
-    .textContent =
+  document.getElementById("questionCount").textContent =
     `${question + 1} / ${questions.length}`;
 
-
-  document
-    .getElementById("progressBar")
-    .style.width =
+  document.getElementById("progressBar").style.width =
     `${((question + 1) / questions.length) * 100}%`;
 
-
-  document
-    .getElementById("categoryLabel")
-    .textContent =
+  document.getElementById("categoryLabel").textContent =
     current[1];
 
-
-  document
-    .getElementById("questionText")
-    .textContent =
+  document.getElementById("questionText").textContent =
     current[0];
 
-
-  const buttons =
-    document.querySelectorAll(
-      ".answers button"
-    );
-
+  const buttons = document.querySelectorAll(".answers button");
 
   buttons.forEach(button => {
-
-    button.classList.remove(
-      "selected"
-    );
-
+    button.classList.remove("selected");
   });
 
-
-  document
-    .getElementById("nextButton")
-    .disabled = true;
-
+  document.getElementById("nextButton").disabled = true;
 }
 
 
-// ========================================
-// CHOOSE ANSWER
-// ========================================
+function chooseAnswer(value, button) {
 
-function chooseAnswer(
-  value,
-  button
-) {
+  answers[person][question] = value;
 
-  answers[person][question] =
-    value;
-
-
-  const buttons =
-    document.querySelectorAll(
-      ".answers button"
-    );
-
+  const buttons = document.querySelectorAll(".answers button");
 
   buttons.forEach(btn => {
-
-    btn.classList.remove(
-      "selected"
-    );
-
+    btn.classList.remove("selected");
   });
 
+  button.classList.add("selected");
 
-  button.classList.add(
-    "selected"
-  );
-
-
-  document
-    .getElementById("nextButton")
-    .disabled = false;
-
+  document.getElementById("nextButton").disabled = false;
 }
 
-
-// ========================================
-// NEXT QUESTION
-// ========================================
 
 function nextQuestion() {
 
-  if (
-    answers[person][question] ===
-    undefined
-  ) {
-
+  if (answers[person][question] === undefined) {
     return;
-
   }
-
 
   question++;
 
-
-  // FRIEND 1 FINISHED
-  if (
-    question >=
-    questions.length
-  ) {
+  if (question >= questions.length) {
 
     if (person === 0) {
 
       person = 1;
-
       question = 0;
-
 
       alert(
         "Friend 1 is finished!\n\n" +
@@ -268,126 +136,65 @@ function nextQuestion() {
         ". Don't peek at the answers!"
       );
 
-
       showQuestion();
-
       return;
-
     }
 
-
-    // BOTH FRIENDS FINISHED
     calculateResult();
-
     return;
-
   }
-
 
   showQuestion();
-
 }
 
 
-// ========================================
-// SIMILARITY
-// ========================================
+function getSimilarity(difference) {
 
-function getSimilarity(
-  difference
-) {
-
-  if (difference === 0) {
-    return 100;
-  }
-
-  if (difference === 1) {
-    return 60;
-  }
-
-  if (difference === 2) {
-    return 30;
-  }
-
-  if (difference === 3) {
-    return 10;
-  }
+  if (difference === 0) return 100;
+  if (difference === 1) return 60;
+  if (difference === 2) return 30;
+  if (difference === 3) return 10;
 
   return 0;
-
 }
 
-
-// ========================================
-// CALCULATE RESULT
-// ========================================
 
 function calculateResult() {
 
   let totalSimilarity = 0;
 
   const categoryScores = {};
-
   const categoryMaximums = {};
 
+  questions.forEach((item, i) => {
 
-  questions.forEach(
-    (item, i) => {
+    const category = item[1];
 
-      const category =
-        item[1];
+    const answerA = answers[0][i];
+    const answerB = answers[1][i];
 
+    const difference =
+      Math.abs(answerA - answerB);
 
-      const answerA =
-        answers[0][i];
+    const similarity =
+      getSimilarity(difference);
 
-      const answerB =
-        answers[1][i];
+    totalSimilarity += similarity;
 
-
-      const difference =
-        Math.abs(
-          answerA - answerB
-        );
-
-
-      const similarity =
-        getSimilarity(
-          difference
-        );
-
-
-      totalSimilarity +=
-        similarity;
-
-
-      if (
-        !categoryScores[category]
-      ) {
-
-        categoryScores[category] =
-          0;
-
-        categoryMaximums[category] =
-          0;
-
-      }
-
-
-      categoryScores[category] +=
-        similarity;
-
-      categoryMaximums[category] +=
-        100;
-
+    if (!categoryScores[category]) {
+      categoryScores[category] = 0;
+      categoryMaximums[category] = 0;
     }
-  );
+
+    categoryScores[category] += similarity;
+    categoryMaximums[category] += 100;
+
+  });
 
 
   const percentage =
     Math.round(
-      totalSimilarity /
-      questions.length
+      totalSimilarity / questions.length
     );
 
 
@@ -396,13 +203,8 @@ function calculateResult() {
     categoryScores,
     categoryMaximums
   );
-
 }
 
-
-// ========================================
-// SHOW RESULT
-// ========================================
 
 function showResult(
   percentage,
@@ -410,21 +212,10 @@ function showResult(
   categoryMaximums
 ) {
 
-  document
-    .getElementById("quizScreen")
-    .classList
-    .add("hidden");
+  document.getElementById("quizScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
 
-
-  document
-    .getElementById("resultScreen")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById("resultNames")
-    .textContent =
+  document.getElementById("resultNames").textContent =
     `${names[0]} + ${names[1]}`;
 
 
@@ -436,30 +227,22 @@ function showResult(
     description =
       "You two are extremely similar! Your answers matched across most of the personality traits tested.";
 
-  }
-
-  else if (percentage >= 70) {
+  } else if (percentage >= 70) {
 
     description =
       "You have a lot in common, although there are still some differences between you.";
 
-  }
-
-  else if (percentage >= 55) {
+  } else if (percentage >= 55) {
 
     description =
       "You're a pretty balanced mix of similarities and differences.";
 
-  }
-
-  else if (percentage >= 40) {
+  } else if (percentage >= 40) {
 
     description =
       "You answered quite differently on a lot of questions. Your friendship definitely has some opposites energy.";
 
-  }
-
-  else {
+  } else {
 
     description =
       "Your answers were very different! You two bring very different personalities to the friendship.";
@@ -467,126 +250,79 @@ function showResult(
   }
 
 
-  document
-    .getElementById("resultDescription")
-    .textContent =
+  document.getElementById("resultDescription").textContent =
     description;
 
 
   const results =
-    document.getElementById(
-      "categoryResults"
-    );
-
+    document.getElementById("categoryResults");
 
   results.innerHTML = "";
 
 
-  Object.keys(categoryScores)
-    .forEach(category => {
+  Object.keys(categoryScores).forEach(category => {
 
-      const score =
-        Math.round(
-          categoryScores[category] /
-          categoryMaximums[category] *
-          100
-        );
-
-
-      const box =
-        document.createElement(
-          "div"
-        );
-
-
-      box.className =
-        "category-result";
-
-
-      box.innerHTML = `
-
-        <div class="category-result-name">
-          ${category}
-        </div>
-
-        <div class="category-result-score">
-          ${score}%
-        </div>
-
-      `;
-
-
-      results.appendChild(
-        box
+    const score =
+      Math.round(
+        categoryScores[category] /
+        categoryMaximums[category] *
+        100
       );
 
-    });
+
+    const box = document.createElement("div");
+
+    box.className = "category-result";
 
 
-  animatePercentage(
-    percentage
-  );
+    box.innerHTML = `
+      <div class="category-result-name">
+        ${category}
+      </div>
 
+      <div class="category-result-score">
+        ${score}%
+      </div>
+    `;
+
+
+    results.appendChild(box);
+
+  });
+
+
+  animatePercentage(percentage);
 }
 
 
-// ========================================
-// ANIMATE RESULT
-// ========================================
-
-function animatePercentage(
-  finalNumber
-) {
+function animatePercentage(finalNumber) {
 
   const element =
-    document.getElementById(
-      "percentage"
-    );
-
+    document.getElementById("percentage");
 
   let current = 0;
 
-
-  element.textContent =
-    "0%";
+  element.textContent = "0%";
 
 
-  const interval =
-    setInterval(() => {
+  const interval = setInterval(() => {
 
-      current += 2;
+    current += 2;
 
+    if (current >= finalNumber) {
+      current = finalNumber;
+      clearInterval(interval);
+    }
 
-      if (
-        current >= finalNumber
-      ) {
+    element.textContent = current + "%";
 
-        current =
-          finalNumber;
-
-        clearInterval(
-          interval
-        );
-
-      }
-
-
-      element.textContent =
-        current + "%";
-
-    }, 20);
-
+  }, 20);
 }
 
-
-// ========================================
-// ANSWER REVIEW
-// ========================================
 
 function openAnswerReview() {
 
   const elementsToHide = [
-
     ".result-intro",
     "#resultNames",
     ".similar-label",
@@ -597,24 +333,16 @@ function openAnswerReview() {
     "#categoryResults",
     ".science-note",
     "#viewAnswersButton"
-
   ];
 
 
   elementsToHide.forEach(selector => {
 
     const element =
-      document.querySelector(
-        selector
-      );
-
+      document.querySelector(selector);
 
     if (element) {
-
-      element.classList.add(
-        "hidden"
-      );
-
+      element.classList.add("hidden");
     }
 
   });
@@ -622,41 +350,26 @@ function openAnswerReview() {
 
   reviewQuestion = 0;
 
-
   createReviewScreen();
 
   showReviewQuestion();
-
 }
 
-
-// ========================================
-// CREATE REVIEW SCREEN
-// ========================================
 
 function createReviewScreen() {
 
   const oldReview =
-    document.getElementById(
-      "reviewScreen"
-    );
-
+    document.getElementById("reviewScreen");
 
   if (oldReview) {
-
     oldReview.remove();
-
   }
 
 
   const review =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
-
-  review.id =
-    "reviewScreen";
+  review.id = "reviewScreen";
 
 
   review.innerHTML = `
@@ -686,7 +399,6 @@ function createReviewScreen() {
 
 
     <div
-      class="category-label"
       id="reviewCategory"
     ></div>
 
@@ -761,73 +473,50 @@ function createReviewScreen() {
   document
     .getElementById("resultScreen")
     .appendChild(review);
-
 }
 
-
-// ========================================
-// SHOW REVIEW QUESTION
-// ========================================
 
 function showReviewQuestion() {
 
   const current =
     questions[reviewQuestion];
 
-
   const answerA =
     answers[0][reviewQuestion];
-
 
   const answerB =
     answers[1][reviewQuestion];
 
 
   const difference =
-    Math.abs(
-      answerA - answerB
-    );
+    Math.abs(answerA - answerB);
 
 
   const similarity =
-    getSimilarity(
-      difference
-    );
+    getSimilarity(difference);
 
 
-  document
-    .getElementById("reviewCount")
-    .textContent =
+  document.getElementById("reviewCount").textContent =
     `${reviewQuestion + 1} / ${questions.length}`;
 
 
-  document
-    .getElementById("reviewProgressBar")
-    .style.width =
+  document.getElementById("reviewProgressBar").style.width =
     `${((reviewQuestion + 1) / questions.length) * 100}%`;
 
 
-  document
-    .getElementById("reviewCategory")
-    .textContent =
+  document.getElementById("reviewCategory").textContent =
     current[1];
 
 
-  document
-    .getElementById("reviewQuestionText")
-    .textContent =
+  document.getElementById("reviewQuestionText").textContent =
     current[0];
 
 
-  document
-    .getElementById("reviewNameA")
-    .textContent =
+  document.getElementById("reviewNameA").textContent =
     names[0];
 
 
-  document
-    .getElementById("reviewNameB")
-    .textContent =
+  document.getElementById("reviewNameB").textContent =
     names[1];
 
 
@@ -843,32 +532,20 @@ function showReviewQuestion() {
   );
 
 
-  document
-    .getElementById("reviewSimilarity")
-    .textContent =
+  document.getElementById("reviewSimilarity").textContent =
     `${similarity}% similarity`;
 
 
-  document
-    .getElementById("previousReview")
-    .disabled =
+  document.getElementById("previousReview").disabled =
     reviewQuestion === 0;
 
 
-  document
-    .getElementById("nextReview")
-    .textContent =
-    reviewQuestion ===
-    questions.length - 1
+  document.getElementById("nextReview").textContent =
+    reviewQuestion === questions.length - 1
       ? "Finish ✓"
       : "Next →";
-
 }
 
-
-// ========================================
-// REVIEW ANSWER OPTIONS
-// ========================================
 
 function createReviewAnswers(
   containerId,
@@ -876,83 +553,49 @@ function createReviewAnswers(
 ) {
 
   const container =
-    document.getElementById(
-      containerId
-    );
-
+    document.getElementById(containerId);
 
   container.innerHTML = "";
 
 
   const labels = [
-
     "Not me",
-
     "Mostly not me",
-
     "Sometimes",
-
     "Mostly me",
-
     "Definitely me"
-
   ];
 
 
-  labels.forEach(
-    (label, index) => {
+  labels.forEach((label, index) => {
 
-      const value =
-        index + 1;
+    const value = index + 1;
 
+    const button =
+      document.createElement("div");
 
-      const button =
-        document.createElement(
-          "div"
-        );
+    button.className =
+      "review-answer-button";
 
 
-      button.className =
-        "review-answer-button";
-
-
-      if (
-        value === selectedAnswer
-      ) {
-
-        button.classList.add(
-          "review-selected"
-        );
-
-      }
-
-
-      button.innerHTML = `
-
-        <strong>
-          ${value}
-        </strong>
-
-        <span>
-          ${label}
-        </span>
-
-      `;
-
-
-      container.appendChild(
-        button
+    if (value === selectedAnswer) {
+      button.classList.add(
+        "review-selected"
       );
-
     }
-  );
 
+
+    button.innerHTML = `
+      <strong>${value}</strong>
+      <span>${label}</span>
+    `;
+
+
+    container.appendChild(button);
+
+  });
 }
 
-
-// ========================================
-// NEXT REVIEW
-// ========================================
 
 function nextReviewQuestion() {
 
@@ -965,57 +608,37 @@ function nextReviewQuestion() {
 
     showReviewQuestion();
 
-  }
-
-  else {
+  } else {
 
     closeAnswerReview();
 
   }
-
 }
 
 
-// ========================================
-// PREVIOUS REVIEW
-// ========================================
-
 function previousReviewQuestion() {
 
-  if (
-    reviewQuestion > 0
-  ) {
+  if (reviewQuestion > 0) {
 
     reviewQuestion--;
 
     showReviewQuestion();
 
   }
-
 }
 
-
-// ========================================
-// CLOSE REVIEW
-// ========================================
 
 function closeAnswerReview() {
 
   const review =
-    document.getElementById(
-      "reviewScreen"
-    );
-
+    document.getElementById("reviewScreen");
 
   if (review) {
-
     review.remove();
-
   }
 
 
   const elementsToShow = [
-
     ".result-intro",
     "#resultNames",
     ".similar-label",
@@ -1026,185 +649,96 @@ function closeAnswerReview() {
     "#categoryResults",
     ".science-note",
     "#viewAnswersButton"
-
   ];
 
 
   elementsToShow.forEach(selector => {
 
     const element =
-      document.querySelector(
-        selector
-      );
-
+      document.querySelector(selector);
 
     if (element) {
-
-      element.classList.remove(
-        "hidden"
-      );
-
+      element.classList.remove("hidden");
     }
 
   });
-
 }
 
 
 // ========================================
 // KEYBOARD CONTROLS
-//
-// 1 = answer 1
-// 2 = answer 2
-// 3 = answer 3
-// 4 = answer 4
-// 5 = answer 5
-// ENTER = next
 // ========================================
 
-document.addEventListener(
-  "keydown",
-  function(event) {
+document.addEventListener("keydown", function(event) {
 
-    const quizScreen =
-      document.getElementById(
-        "quizScreen"
-      );
+  const quizScreen =
+    document.getElementById("quizScreen");
 
 
-    // Only work during the quiz
-    if (
-      !quizScreen ||
-      quizScreen.classList.contains(
-        "hidden"
-      )
-    ) {
-
-      return;
-
-    }
+  if (
+    !quizScreen ||
+    quizScreen.classList.contains("hidden")
+  ) {
+    return;
+  }
 
 
-    // ====================================
-    // ENTER = NEXT
-    // ====================================
+  if (event.key === "Enter") {
 
-    if (
-      event.key === "Enter"
-    ) {
-
-      const nextButton =
-        document.getElementById(
-          "nextButton"
-        );
-
-
-      if (
-        nextButton &&
-        !nextButton.disabled
-      ) {
-
-        nextQuestion();
-
-      }
-
-
-      event.preventDefault();
-
-      return;
-
-    }
-
-
-    // ====================================
-    // 1-5 = ANSWERS
-    // ====================================
-
-    let value = null;
+    const nextButton =
+      document.getElementById("nextButton");
 
 
     if (
-      event.key === "1" ||
-      event.code === "Digit1" ||
-      event.code === "Numpad1"
+      nextButton &&
+      !nextButton.disabled
     ) {
 
-      value = 1;
+      nextQuestion();
 
     }
 
 
-    if (
-      event.key === "2" ||
-      event.code === "Digit2" ||
-      event.code === "Numpad2"
-    ) {
+    event.preventDefault();
 
-      value = 2;
-
-    }
+    return;
+  }
 
 
-    if (
-      event.key === "3" ||
-      event.code === "Digit3" ||
-      event.code === "Numpad3"
-    ) {
-
-      value = 3;
-
-    }
+  const key = event.key;
 
 
-    if (
-      event.key === "4" ||
-      event.code === "Digit4" ||
-      event.code === "Numpad4"
-    ) {
-
-      value = 4;
-
-    }
-
-
-    if (
-      event.key === "5" ||
-      event.code === "Digit5" ||
-      event.code === "Numpad5"
-    ) {
-
-      value = 5;
-
-    }
+  if (
+    key !== "1" &&
+    key !== "2" &&
+    key !== "3" &&
+    key !== "4" &&
+    key !== "5"
+  ) {
+    return;
+  }
 
 
-    if (value === null) {
-
-      return;
-
-    }
+  const value =
+    Number(key);
 
 
-    const buttons =
-      document.querySelectorAll(
-        ".answers button"
-      );
+  const buttons =
+    document.querySelectorAll(
+      ".answers button"
+    );
 
 
-    if (
-      buttons.length >= value
-    ) {
+  if (buttons[value - 1]) {
 
-      chooseAnswer(
-        value,
-        buttons[value - 1]
-      );
+    chooseAnswer(
+      value,
+      buttons[value - 1]
+    );
 
-
-      event.preventDefault();
-
-    }
+    event.preventDefault();
 
   }
-);
+
+});
 ```
