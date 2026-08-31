@@ -1,327 +1,217 @@
-<!DOCTYPE html>
-<html lang="en">
+```html
+<div class="app">
 
-<head>
+  <!-- START SCREEN -->
+  <div class="card" id="startScreen">
 
-  <meta charset="UTF-8">
+    <div class="science-icon">✦</div>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <p class="eyebrow">SCIENCE FAIR EXPERIMENT</p>
 
-  <title>Do Opposites Really Attract?</title>
+    <h1>
+      Do Opposites<br>
+      <span>Really Attract?</span>
+    </h1>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
+    <p class="intro">
+      Are best friends actually similar, or are we all just pretending
+      to understand each other?
+    </p>
 
-</head>
+    <div class="experiment-box">
 
+      <strong>THE EXPERIMENT</strong>
 
-<body>
+      <p>
+        You and your best friend will each answer 30 personality questions.
+        We'll compare your answers and calculate your
+        <b>questionnaire similarity</b>.
+      </p>
 
-  <main class="app">
+    </div>
 
+    <label for="nameA">Friend 1</label>
 
-    <!-- START SCREEN -->
-
-    <section
-      class="card"
-      id="startScreen"
+    <input
+      id="nameA"
+      type="text"
+      placeholder="Enter a name"
     >
 
-      <div class="science-icon">
-        ✦
-      </div>
+    <label for="nameB">Friend 2</label>
 
-      <p class="eyebrow">
-        SCIENCE FAIR EXPERIMENT
-      </p>
-
-      <h1>
-        Do Opposites<br>
-        <span>Really Attract?</span>
-      </h1>
-
-      <p class="intro">
-        Are best friends actually similar, or are we all just pretending
-        to understand each other?
-      </p>
-
-
-      <div class="experiment-box">
-
-        <strong>
-          THE EXPERIMENT
-        </strong>
-
-        <p>
-          You and your best friend will each answer 30 personality questions.
-          We'll compare your answers and calculate your
-          <b>questionnaire similarity</b>.
-        </p>
-
-      </div>
-
-
-      <label for="nameA">
-        Friend 1
-      </label>
-
-      <input
-        id="nameA"
-        type="text"
-        placeholder="Enter a name"
-      >
-
-
-      <label for="nameB">
-        Friend 2
-      </label>
-
-      <input
-        id="nameB"
-        type="text"
-        placeholder="Enter a name"
-      >
-
-
-      <button
-        type="button"
-        class="main-button"
-        onclick="startTest()"
-      >
-        Start experiment →
-      </button>
-
-
-      <p class="tiny-note">
-        Answer honestly. There are no right or wrong answers.
-      </p>
-
-    </section>
-
-
-
-    <!-- QUIZ SCREEN -->
-
-    <section
-      class="card hidden"
-      id="quizScreen"
+    <input
+      id="nameB"
+      type="text"
+      placeholder="Enter a name"
     >
 
-      <div class="top-row">
-
-        <span id="personLabel"></span>
-
-        <span id="questionCount"></span>
-
-      </div>
-
-
-      <div class="progress">
-
-        <div id="progressBar"></div>
-
-      </div>
-
-
-      <div
-        class="category-label"
-        id="categoryLabel"
-      ></div>
-
-
-      <h2 id="questionText"></h2>
-
-
-      <p class="scale-title">
-        How much does this sound like you?
-      </p>
-
-
-      <div class="answers">
-
-
-        <button
-          type="button"
-          onclick="chooseAnswer(1, this)"
-        >
-
-          <strong>1</strong>
-
-          <span>
-            Not me
-          </span>
-
-        </button>
-
-
-        <button
-          type="button"
-          onclick="chooseAnswer(2, this)"
-        >
-
-          <strong>2</strong>
-
-          <span>
-            Mostly not me
-          </span>
-
-        </button>
-
-
-        <button
-          type="button"
-          onclick="chooseAnswer(3, this)"
-        >
-
-          <strong>3</strong>
-
-          <span>
-            Sometimes
-          </span>
-
-        </button>
-
-
-        <button
-          type="button"
-          onclick="chooseAnswer(4, this)"
-        >
-
-          <strong>4</strong>
-
-          <span>
-            Mostly me
-          </span>
-
-        </button>
-
-
-        <button
-          type="button"
-          onclick="chooseAnswer(5, this)"
-        >
-
-          <strong>5</strong>
-
-          <span>
-            Definitely me
-          </span>
-
-        </button>
-
-
-      </div>
-
-
-      <button
-        type="button"
-        class="next-button"
-        id="nextButton"
-        onclick="nextQuestion()"
-        disabled
-      >
-        Next →
-      </button>
-
-    </section>
-
-
-
-    <!-- RESULT SCREEN -->
-
-    <section
-      class="card hidden"
-      id="resultScreen"
+    <button
+      class="main-button"
+      onclick="startTest()"
     >
+      Start experiment →
+    </button>
 
-      <p class="eyebrow">
-        EXPERIMENT COMPLETE
-      </p>
+    <p class="tiny-note">
+      Answer honestly. There are no right or wrong answers.
+    </p>
 
-
-      <h1 id="resultNames"></h1>
-
-
-      <p class="result-intro">
-        Your questionnaire similarity is...
-      </p>
+  </div>
 
 
-      <div
-        class="percentage"
-        id="percentage"
-      >
-        0%
-      </div>
+  <!-- QUIZ SCREEN -->
+  <div class="card hidden" id="quizScreen">
+
+    <div class="top-row">
+
+      <span id="personLabel"></span>
+
+      <span id="questionCount"></span>
+
+    </div>
 
 
-      <div class="similar-label">
-        SIMILAR
-      </div>
+    <div class="progress">
+
+      <div id="progressBar"></div>
+
+    </div>
 
 
-      <p
-        class="result-description"
-        id="resultDescription"
-      ></p>
+    <div
+      class="category-label"
+      id="categoryLabel"
+    ></div>
 
 
-      <div class="divider"></div>
+    <h2 id="questionText"></h2>
 
 
-      <h3>
-        Your personality categories
-      </h3>
+    <p class="scale-title">
+      How much does this sound like you?
+    </p>
 
 
-      <div
-        class="category-results"
-        id="categoryResults"
-      ></div>
+    <div class="answers">
 
-
-      <div class="science-note">
-
-        <strong>
-          What does this mean?
-        </strong>
-
-        <p>
-          This percentage shows how closely your answers matched
-          on the 30 questions in this experiment. It does not prove
-          that similar people become friends or that opposites attract.
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="main-button"
-        onclick="location.reload()"
-      >
-        Test another pair ↻
+      <button onclick="chooseAnswer(1, this)">
+        <strong>1</strong>
+        <span>Not me</span>
       </button>
 
-    </section>
+      <button onclick="chooseAnswer(2, this)">
+        <strong>2</strong>
+        <span>Mostly not me</span>
+      </button>
+
+      <button onclick="chooseAnswer(3, this)">
+        <strong>3</strong>
+        <span>Sometimes</span>
+      </button>
+
+      <button onclick="chooseAnswer(4, this)">
+        <strong>4</strong>
+        <span>Mostly me</span>
+      </button>
+
+      <button onclick="chooseAnswer(5, this)">
+        <strong>5</strong>
+        <span>Definitely me</span>
+      </button>
+
+    </div>
 
 
-  </main>
+    <button
+      class="next-button"
+      id="nextButton"
+      onclick="nextQuestion()"
+      disabled
+    >
+      Next →
+    </button>
+
+  </div>
 
 
-  <!-- LOAD JAVASCRIPT AFTER THE HTML -->
+  <!-- RESULTS SCREEN -->
+  <div class="card hidden" id="resultScreen">
 
-  <script
-    src="script.js"
-    defer
-  ></script>
+    <p class="eyebrow">
+      EXPERIMENT COMPLETE
+    </p>
 
 
-</body>
+    <h1 id="resultNames"></h1>
 
-</html>
+
+    <p class="result-intro">
+      Your questionnaire similarity is...
+    </p>
+
+
+    <div
+      class="percentage"
+      id="percentage"
+    >
+      0%
+    </div>
+
+
+    <div class="similar-label">
+      SIMILAR
+    </div>
+
+
+    <p
+      class="result-description"
+      id="resultDescription"
+    ></p>
+
+
+    <div class="divider"></div>
+
+
+    <h3>Your personality categories</h3>
+
+
+    <div
+      class="category-results"
+      id="categoryResults"
+    ></div>
+
+
+    <button
+      class="main-button"
+      id="viewAnswersButton"
+      onclick="openAnswerReview()"
+    >
+      View your answers ↓
+    </button>
+
+
+    <div class="science-note">
+
+      <strong>What does this mean?</strong>
+
+      <p>
+        This percentage shows how closely your answers matched
+        on the 30 questions in this experiment. It does not prove
+        that similar people become friends or that opposites attract.
+      </p>
+
+    </div>
+
+
+    <button
+      class="main-button"
+      onclick="location.reload()"
+    >
+      Test another pair ↻
+    </button>
+
+  </div>
+
+</div>
+```
